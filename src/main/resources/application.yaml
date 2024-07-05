@@ -1,0 +1,36 @@
+#docker run --name pastebin-db -p 5678:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=pastebin -d postgres
+#docker exec -ti pastebin-db psql -U root -d pastebin
+
+#not using (less):
+#docker run \
+#   -p 9000:9000 \
+#   -p 9001:9001 \
+#   --name minio1 \
+### --security-opt "credentialspec=file://path/to/file.json"
+#   -e "MINIO_ROOT_USER=ROOTUSER" \
+#   -e "MINIO_ROOT_PASSWORD=CHANGEME123" \
+#   -v D:\data:/data \
+#   quay.io/minio/minio server /data --console-address ":9001"
+
+#was using (full):
+#docker run -p 9000:9000 -p 9001:9001 --name minio1 -v D:\minio\data:/data -e "MINIO_ROOT_USER=root" -e "MINIO_ROOT_PASSWORD=root" quay.io/minio/minio server /data --console-address ":9001"
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5678/pastebin
+    username: root
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    database: POSTGRESQL
+
+  minio:
+    url: https://localhost:9000
+    access-key: wnoi7e4iTFsMQXPosuNp
+    secret-key: 6xlDXT65EEE7Mf5LbAKatHggdQdbU3kdThpLpbxy
