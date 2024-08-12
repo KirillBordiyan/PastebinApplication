@@ -1,6 +1,14 @@
 #docker run --name pastebin-db -p 5678:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=pastebin -d postgres
 #docker exec -ti pastebin-db psql -U root -d pastebin
 
+#  для создания схем (чтобы не использовать публичную):
+#  1) в консоли пишем -->> create schema pastebin_schema;
+#  2) потом добавляем пути -->> SET search_path = public, pastebin_schema;
+#  3) проверяем -->> \dn покажет все схемы
+#  4) потом запуск прилаги
+#  5) \d покажет вообще все таблицы (с разных схем);
+#  нам важно только знать, что есть схема и что ей принадлежат наши таблицы
+
 #not using (less):
 #docker run \
 #   -p 9000:9000 \
@@ -13,24 +21,69 @@
 #   quay.io/minio/minio server /data --console-address ":9001"
 
 #was using (full):
-#docker run -p 9000:9000 -p 9001:9001 --name minio1 -v D:\minio\data:/data -e "MINIO_ROOT_USER=root" -e "MINIO_ROOT_PASSWORD=root" quay.io/minio/minio server /data --console-address ":9001"
+#docker run -p 9000:9000 -p 9001:9001 --name minio-result -v D:\minio\data:/data -e "MINIO_ROOT_USER=root" -e "MINIO_ROOT_PASSWORD=root" quay.io/minio/minio server /data --console-address ":9001"
 
+
+springdoc:
+  swagger-ui:
+    path: /pastebin-documentation
+  api-docs:
+    path: /pastebin-api-documentation
 
 spring:
+#для sql, я удалил, тк мне лучше сделать входные в коде
+#мб к сдаче поменяю
+#  sql:
+#    init:
+#      mode: always
+#      continue-on-error: false
+#      data-locations:
+#        - classpath:schema.sql
+#        - classpath:demo_data.sql
   datasource:
-    url: jdbc:postgresql://localhost:5678/pastebin
+#    url: jdbc:postgresql://${HOST}:5678/${POSTGRES_DATABASE}
+    url: jdbc:postgresql://localhost:5678/pastebin?currentSchema=pastebin_schema
+#    username: ${POSTGRES_USERNAME}
     username: root
+#    password: ${POSTGRES_PASSWORD}
     password: 1234
     driver-class-name: org.postgresql.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    generate-ddl: true
+    show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     database: POSTGRESQL
 
-  minio:
-    url: https://localhost:9000
-    access-key: wnoi7e4iTFsMQXPosuNp
-    secret-key: 6xlDXT65EEE7Mf5LbAKatHggdQdbU3kdThpLpbxy
+  #чисто админовское
+  #login: minioadmin <---> pass: minioadmin
+minio:
+#    bucket: ${MINIO_BUCKET}
+  bucket: bucket1
+#    url: ${MINIO_URL}
+  url: https://localhost:9000
+#    accessKey: ${MINIO_ACCESS_KEY}  #wnoi7e4iTFsMQXPosuNp
+  accessKey: minioadmin  #wnoi7e4iTFsMQXPosuNp
+#    secretKey: ${MINIO_SECRET_KEY}  #6xlDXT65EEE7Mf5LbAKatHggdQdbU3kdThpLpbxy
+  secretKey: minioadmin  #6xlDXT65EEE7Mf5LbAKatHggdQdbU3kdThpLpbxy
+
+# добавить, когда появится security
+security:
+  jwt:
+    secret: 2361FECB0791BDC153E59305AD2389A3D6BB19EA3257EF0E0404079578DD1ECC
+    access: 1 #час
+#    refresh: 30 #дней/часов
+
+#    jwt:
+#      secret: ${JWT_SECRET}
+#      validation: 30
+#      access: 1
+#      refresh: 30
+
+
+
+
+
+
+

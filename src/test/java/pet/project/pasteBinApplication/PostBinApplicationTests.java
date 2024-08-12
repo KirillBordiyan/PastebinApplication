@@ -1,4 +1,4 @@
-package pet.project.post_bin_application;
+package pet.project.pasteBinApplication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
