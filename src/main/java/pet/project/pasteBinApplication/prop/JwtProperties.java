@@ -1,6 +1,5 @@
 package pet.project.pasteBinApplication.prop;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,9 +17,11 @@ public class JwtProperties {
 
     private String secret;
     private Long access;
+    private Long refresh;
 
-    public JwtProperties(String secret, Long access) {
+    public JwtProperties(String secret, Long access, Long refresh) {
         this.secret = secret;
-        this.access = TimeUnit.HOURS.toHours(access);
+        this.access = TimeUnit.HOURS.toMillis(access);
+        this.refresh = TimeUnit.DAYS.toMillis(refresh);
     }
 }

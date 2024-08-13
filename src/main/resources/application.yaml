@@ -73,13 +73,8 @@ security:
   jwt:
     secret: "2361FECB0791BDC153E59305AD2389A3D6BB19EA3257EF0E0404079578DD1ECC"
     access: 1 #час
-#    refresh: 30 #дней/часов
+    refresh: 30 #дней
 
-#    jwt:
-#      secret: ${JWT_SECRET}
-#      validation: 30
-#      access: 1
-#      refresh: 30
 
 
 
