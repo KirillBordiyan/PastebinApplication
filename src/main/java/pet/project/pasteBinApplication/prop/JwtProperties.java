@@ -21,7 +21,9 @@ public class JwtProperties {
 
     public JwtProperties(String secret, Long access, Long refresh) {
         this.secret = secret;
-        this.access = TimeUnit.HOURS.toMillis(access);
-        this.refresh = TimeUnit.DAYS.toMillis(refresh);
+//        this.access = TimeUnit.HOURS.toMillis(access);
+//        this.refresh = TimeUnit.DAYS.toMillis(refresh);
+        this.access = access;
+        this.refresh = refresh;
     }
 }

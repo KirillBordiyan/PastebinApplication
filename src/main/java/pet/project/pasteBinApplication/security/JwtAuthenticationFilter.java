@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (ResourceNotFoundException empty) {
             }
         }
+        filterChain.doFilter(request,response);
     }
 
 

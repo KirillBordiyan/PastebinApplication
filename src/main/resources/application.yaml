@@ -72,8 +72,8 @@ minio:
 security:
   jwt:
     secret: "2361FECB0791BDC153E59305AD2389A3D6BB19EA3257EF0E0404079578DD1ECC"
-    access: 1 #час
-    refresh: 30 #дней
+    access: 3600000 #1#час
+    refresh: 2592000000 #30 #дней
 
 
 

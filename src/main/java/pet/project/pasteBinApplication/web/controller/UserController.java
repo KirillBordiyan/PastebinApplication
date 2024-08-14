@@ -15,7 +15,6 @@ import pet.project.pasteBinApplication.web.mappers.UserMapper;
 import pet.project.pasteBinApplication.web.mappers.UtilityFileMapper;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -48,15 +47,18 @@ public class UserController {
         return userMapper.toDto(updated);
     }
 
-    @GetMapping("/{id}")
-    public UserDto getById(@PathVariable(name = "id") UUID id){
-        UserEntity userEntity = userService.getById(id);
+//    @GetMapping("/{id}")
+    @GetMapping("/{login}")
+    public UserDto getById(/*@PathVariable(name = "id") UUID id*/ @PathVariable String login){
+//        UserEntity userEntity = userService.getById(id);
+        UserEntity userEntity = userService.getByLogin(login);
         return userMapper.toDto(userEntity);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable(name = "id") UUID id){
-        userService.deleteUser(id);
+//    @DeleteMapping("/{id}")
+    @DeleteMapping("/{login}")
+    public void deleteById(/*@PathVariable(name = "id") UUID id*/ @PathVariable String login){
+        userService.deleteUser(login);
     }
 
     @GetMapping("/{login}/files")

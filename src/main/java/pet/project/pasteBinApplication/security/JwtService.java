@@ -37,7 +37,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generatedAccessToken(UUID userId, String login, Set<Role> roles) { //метод генерации токена
+    public String generatedAccessToken(Long userId, String login, Set<Role> roles) { //метод генерации токена
         Map<String, String> claims = new HashMap<>();
         claims.put("authorities", getRoles(roles).toString());
         claims.put("id", String.valueOf(userId));
@@ -52,7 +52,7 @@ public class JwtService {
     }
 
 
-    public String generateRefreshToken(UUID userId, String login){
+    public String generateRefreshToken(Long userId, String login){
         Map<String, String> claims = new HashMap<>();
         claims.put("id", String.valueOf(userId));
 
@@ -67,10 +67,10 @@ public class JwtService {
 
     public JwtResponse refreshUserTokens(String refreshToken){
         JwtResponse response = new JwtResponse();
-        if(!isTokenValid(refreshToken)){
+        if(isTokenValid(refreshToken)){
             throw new AccessDeniedException();
         }
-        UUID id = getUserId(refreshToken);
+        Long id = getUserId(refreshToken);
         UserEntity user = userService.getById(id);
 
         response.setUserId(id);
@@ -95,14 +95,14 @@ public class JwtService {
                 .getPayload();
     }
 
-    private UUID getUserId(String jwt){
+    private Long getUserId(String jwt){
         Claims claims = getClaims(jwt);
-        return UUID.fromString(claims.getId());
+        return Long.valueOf((String) claims.get("id"));
     }
 
     public boolean isTokenValid(String jwt){
         Claims claims = getClaims(jwt);
-        return /*! -->> ????*/claims.getExpiration().after(Date.from(Instant.now()));
+        return !claims.getExpiration().after(Date.from(Instant.now()));
     }
 
     public String extractUsername(String jwt){

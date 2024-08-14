@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import pet.project.pasteBinApplication.model.file.UserFile;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users", schema = "pastebin_schema")
@@ -19,9 +18,9 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "userId")
-    UUID userId;
+    Long userId;
 
     @Column(name = "userName", nullable = false)
     String userName;

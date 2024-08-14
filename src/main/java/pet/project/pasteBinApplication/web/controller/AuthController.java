@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pet.project.pasteBinApplication.model.user.UserEntity;
 import pet.project.pasteBinApplication.service.AuthService;
 import pet.project.pasteBinApplication.service.UserService;
+import pet.project.pasteBinApplication.service.implementation.UserServiceImpl;
 import pet.project.pasteBinApplication.web.dto.auth.JwtRequest;
 import pet.project.pasteBinApplication.web.dto.auth.JwtResponse;
 import pet.project.pasteBinApplication.web.dto.user.UserDto;

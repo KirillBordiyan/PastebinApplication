@@ -1,19 +1,24 @@
 package pet.project.pasteBinApplication.web.dto.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.Length;
 import pet.project.pasteBinApplication.web.dto.validation.OnCreateProcess;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
 
-import java.util.UUID;
-
-@Data
+//@Data
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
+
     @NotNull(message = "DTO user: ID cannot be null!", groups = OnUpdateProcess.class)
-    UUID userId;
+    Long userId;
 
     @NotNull(message = "DTO user: USERNAME cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     @Length(max = 255, message = "DTO user: USERNAME must be smaller than 255 symb", groups = {OnUpdateProcess.class, OnCreateProcess.class})

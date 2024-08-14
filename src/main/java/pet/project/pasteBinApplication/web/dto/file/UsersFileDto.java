@@ -2,7 +2,9 @@ package pet.project.pasteBinApplication.web.dto.file;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
 
@@ -10,6 +12,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UsersFileDto {
     //FIXME с этим DTO подумать, далеко не все нужное
 
