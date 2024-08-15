@@ -15,6 +15,7 @@ import pet.project.pasteBinApplication.service.UserService;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,9 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserEntity getById(Long userId) {
+    public UserEntity getById(UUID userId) {
         return userRepository
-                .findById(userId)
+                .findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 

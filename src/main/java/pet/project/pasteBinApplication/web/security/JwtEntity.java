@@ -8,13 +8,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtEntity implements UserDetails {
 
-    Long userId;
+    UUID userId;
     String userName;
     String login;
     String password;

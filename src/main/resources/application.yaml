@@ -25,10 +25,11 @@
 
 
 springdoc:
+  override-with-generic-response: false
   swagger-ui:
-    path: /pastebin-documentation
+    path: /swagger/pastebin-ui
   api-docs:
-    path: /pastebin-api-documentation
+    path: /swagger/pastebin-api
 
 spring:
 #для sql, я удалил, тк мне лучше сделать входные в коде

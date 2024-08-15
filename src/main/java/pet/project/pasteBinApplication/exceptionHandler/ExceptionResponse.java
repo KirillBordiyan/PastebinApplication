@@ -1,8 +1,7 @@
-package pet.project.pasteBinApplication.controller;
+package pet.project.pasteBinApplication.exceptionHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
@@ -18,10 +17,6 @@ public class ExceptionResponse {
         this.message = message;
         this.statusCode = statusCode;
     }
-
-//    public ExceptionResponse(String message) {
-//        this.message = message;
-//    }
-
-
 }
+
+//FIXME 4 часть

@@ -2,9 +2,11 @@ package pet.project.pasteBinApplication.service;
 
 import pet.project.pasteBinApplication.model.user.UserEntity;
 
+import java.util.UUID;
+
 public interface UserService {
 
-    UserEntity getById(Long userId);
+    UserEntity getById(UUID userId);
     UserEntity getByLogin(String login);
     UserEntity updateUser(UserEntity userEntity);
     UserEntity createUser(UserEntity userEntity);

@@ -77,13 +77,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--        &lt;!&ndash;		swagger @EnableSwagger2&ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>io.springfox</groupId>-->
-        <!--            <artifactId>springfox-swagger2</artifactId>-->
-        <!--            <version>3.0.0</version>-->
-        <!--        </dependency>-->
-
         <!--swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>

@@ -1,6 +1,8 @@
 package pet.project.pasteBinApplication.model.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import pet.project.pasteBinApplication.model.file.UserFile;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users", schema = "pastebin_schema")
@@ -18,9 +21,9 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "userId")
-    Long userId;
+    UUID userId;
 
     @Column(name = "userName", nullable = false)
     String userName;
@@ -38,7 +41,8 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     String password;
 
-    @Column(name = "passwordConfirm") //для подтверждения пароля
+    //для подтверждения пароля, не сохраняем в БД
+    @Transient
     String passwordConfirm;
 
 

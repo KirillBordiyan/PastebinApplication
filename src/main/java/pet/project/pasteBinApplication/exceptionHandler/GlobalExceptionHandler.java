@@ -1,8 +1,9 @@
-package pet.project.pasteBinApplication.controller;
+package pet.project.pasteBinApplication.exceptionHandler;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,24 +27,12 @@ public class GlobalExceptionHandler {
         return new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
 
-    //TODO этот под вопросом, вроде как его можно заменить IllegalStateExc
-    @ExceptionHandler(NoSuchElementException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse handleIllegalArgument(NoSuchElementException e) {
-        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    @ExceptionHandler(ResourceMappingException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponse handleResourceMapping(ResourceMappingException e) {
+        return new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
 
-    @ExceptionHandler(IOException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ExceptionResponse handleIOException(IOException e) {
-        return new ExceptionResponse(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse handleIllegalStateException(IllegalStateException e) {
-        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -51,16 +40,17 @@ public class GlobalExceptionHandler {
         return new ExceptionResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 
-    @ExceptionHandler(ResourceMappingException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionResponse handleResourceMapping(ResourceMappingException e) {
-        return new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleIllegalStateException(IllegalStateException e) {
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
-    @ExceptionHandler({AccessDeniedException.class, org.springframework.security.access.AccessDeniedException.class})
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionResponse handleAccessDenied() {
-        return new ExceptionResponse(HttpStatus.FORBIDDEN.value(), "Access denied!");
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleIllegalArgument(NoSuchElementException e) {
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -86,5 +76,23 @@ public class GlobalExceptionHandler {
                 )));
 
         return response;
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleAuthenticationException(AuthenticationException e){
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "Authentication was failed!");
+    }
+
+    @ExceptionHandler({AccessDeniedException.class, org.springframework.security.access.AccessDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse handleAccessDenied() {
+        return new ExceptionResponse(HttpStatus.FORBIDDEN.value(), "Access denied!");
+    }
+
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ExceptionResponse handleIOException(IOException e) {
+        return new ExceptionResponse(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage());
     }
 }

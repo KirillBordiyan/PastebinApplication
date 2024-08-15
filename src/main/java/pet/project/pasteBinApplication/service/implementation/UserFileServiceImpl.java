@@ -10,6 +10,7 @@ import pet.project.pasteBinApplication.repositories.UsersFilesRepository;
 import pet.project.pasteBinApplication.service.UsersFilesService;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional
-    public UserFile createFile(UserFile userFile, Long userId) {
+    public UserFile createFile(UserFile userFile, UUID userId) {
         usersFilesRepository.save(userFile);
         //todo
 //        usersFilesRepository.assignToUserById(userFile.getId(), userId);
