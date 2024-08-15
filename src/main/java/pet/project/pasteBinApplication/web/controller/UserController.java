@@ -66,9 +66,9 @@ public class UserController {
     @Operation(
             summary = "Delete user by nick name"
     )
-    @DeleteMapping("/{displayName}")
-    public void deleteByDisplayName(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "displayName") String displayName) {
-        userService.deleteUser(displayName);
+    @DeleteMapping("/{nickName}")
+    public void deleteByNickName(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "nickName") String nickName) {
+        userService.deleteUser(nickName);
     }
 
     @Operation(

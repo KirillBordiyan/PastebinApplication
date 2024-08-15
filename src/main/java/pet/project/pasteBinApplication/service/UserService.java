@@ -10,6 +10,6 @@ public interface UserService {
     UserEntity getByNickName(String nickName);
     UserEntity updateUser(UserEntity userEntity);
     UserEntity createUser(UserEntity userEntity);
-    void deleteUser(String displayName);
-    boolean isUserFileOwner(String displayName, Long fileId);
+    void deleteUser(String nickName);
+    boolean isUserFileOwner(String nickName, Long fileId);
 }
