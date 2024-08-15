@@ -11,21 +11,17 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Optional<UserEntity> findByLogin(String login);
+    Optional<UserEntity> findByNickName(String nickName);
 
-    void deleteByLogin(String login);
+    void deleteByNickName(String nickName);
 
     @Query(nativeQuery = true, value = "select file " +
             "from users_files file" +
             " where file.userFileId = :fileId and file.owner = " +
             "   (select * " +
             "   from users " +
-            "   where u.login = :login)")
-    boolean isFileOwner(String login, Long fileId);
+            "   where u.nick_name = :nickName)")
+    boolean isFileOwner(String nickName, Long fileId);
 
-
-    Optional<UserEntity> findByUserId(UUID id);
-    //    void updateUser(UserEntity user);
-    //    void createUser(UserEntity user);
-    //    void insertUserRole(Long userId, Role role); //или чделать логином?
+//    Optional<UserEntity> findByUserId(UUID id);
 }

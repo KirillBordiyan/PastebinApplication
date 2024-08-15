@@ -10,7 +10,6 @@ import pet.project.pasteBinApplication.repositories.UsersFilesRepository;
 import pet.project.pasteBinApplication.service.UsersFilesService;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +30,9 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserFile> getAllByLogin(String login) {
+    public List<UserFile> getAllByNickName(String nickName) {
 //        return null;
-        return usersFilesRepository.findAllUsersFilesByLogin(login);
+        return usersFilesRepository.findAllUsersFilesByNickName(nickName);
     }
 
     @Override
@@ -45,9 +44,9 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional
-    public UserFile createFile(UserFile userFile, UUID userId) {
+    public UserFile createFile(UserFile userFile, String nickName) {
         usersFilesRepository.save(userFile);
-        //todo
+        //todo метод создания файла
 //        usersFilesRepository.assignToUserById(userFile.getId(), userId);
         return userFile;
     }

@@ -37,14 +37,14 @@ public class JwtService {
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generatedAccessToken(UUID userId, String login, Set<Role> roles) { //метод генерации токена
+    public String generatedAccessToken(String nickName, Set<Role> roles) { //метод генерации токена
         Map<String, String> claims = new HashMap<>();
         claims.put("authorities", getRoles(roles).toString());
-        claims.put("id", String.valueOf(userId));
+        claims.put("nickName", String.valueOf(nickName));
 
         return Jwts.builder()
                 .claims(claims)
-                .subject(login)
+                .subject(nickName)
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(properties.getAccess())))
                 .signWith(generateKey())
@@ -52,13 +52,13 @@ public class JwtService {
     }
 
 
-    public String generateRefreshToken(UUID userId, String login){
+    public String generateRefreshToken(String nickName){
         Map<String, String> claims = new HashMap<>();
-        claims.put("id", String.valueOf(userId));
+        claims.put("nickName", String.valueOf(nickName));
 
         return Jwts.builder()
                 .claims(claims)
-                .subject(login)
+                .subject(nickName)
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(properties.getRefresh())))
                 .signWith(generateKey())
@@ -70,13 +70,13 @@ public class JwtService {
         if(isTokenValid(refreshToken)){
             throw new AccessDeniedException();
         }
-        UUID id = getUserId(refreshToken);
-        UserEntity user = userService.getById(id);
+        String nickName = getUserId(refreshToken);
+        UserEntity user = userService.getByNickName(nickName);
 
-        response.setUserId(id);
-        response.setLogin(user.getLogin());
-        response.setAccess(generatedAccessToken(id, user.getLogin(), user.getRoles()));
-        response.setRefresh(generateRefreshToken(id, user.getLogin()));
+//        response.setUserId(id);
+//        response.setEmail(user.getEmail());
+        response.setAccess(generatedAccessToken(user.getNickName(), user.getRoles()));
+        response.setRefresh(generateRefreshToken(user.getNickName()));
 
         return response;
     }
@@ -95,10 +95,10 @@ public class JwtService {
                 .getPayload();
     }
 
-    private UUID getUserId(String jwt){
+    private String getUserId(String jwt){
         Claims claims = getClaims(jwt);
-        return UUID.fromString((String) claims.get("id"));
-//        return Long.valueOf((String) claims.get("id"));
+//        return UUID.fromString((String) claims.get("nickName"));
+        return String.valueOf((String) claims.get("nickName"));
     }
 
     public boolean isTokenValid(String jwt){

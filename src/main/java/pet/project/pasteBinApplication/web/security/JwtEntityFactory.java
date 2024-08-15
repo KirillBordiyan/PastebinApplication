@@ -12,9 +12,8 @@ public class JwtEntityFactory {
 
     public static JwtEntity create(UserEntity userEntity){
         return new JwtEntity(
-                userEntity.getUserId(),
-                userEntity.getUserName(),
-                userEntity.getLogin(),
+                userEntity.getNickName(),
+                userEntity.getEmail(),
                 userEntity.getPassword(),
                 toGrantedAuth(new ArrayList<>(userEntity.getRoles()))
         );

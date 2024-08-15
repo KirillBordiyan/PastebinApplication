@@ -1,5 +1,6 @@
 package pet.project.pasteBinApplication.web.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -21,21 +22,21 @@ import java.util.concurrent.ThreadLocalRandom;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
 
-    @Schema(description = "User ID", exampleClasses = UUID.class, requiredMode = Schema.RequiredMode.NOT_REQUIRED/*"cdc228b8-4d57-4ed2-895f-f0bc1562c03b"*/)
-    @NotNull(message = "DTO user: ID cannot be null!", groups = OnUpdateProcess.class)
-    UUID userId;
+//    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "User ID", exampleClasses = UUID.class/*"cdc228b8-4d57-4ed2-895f-f0bc1562c03b"*/)
+//    @NotNull(message = "DTO user: ID cannot be null!", groups = OnUpdateProcess.class)
+//    UUID userId;
 
-    @Schema(description = "User name", example = "Ivan Ivanov")
-    @NotNull(message = "DTO user: USERNAME cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
+    @Schema(description = "User nick name", example = "Ivan_Ivanov86")
+    @NotNull(message = "DTO user: NICKNAME cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     @Length(max = 255, message = "DTO user: USERNAME must be smaller than 255 symb", groups = {OnUpdateProcess.class, OnCreateProcess.class})
-    String userName;
+    String nickName;
 
-    @Schema(description = "Login = user email", example = "email@mail.com")
-    @NotNull(message = "DTO user: LOGIN cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
+    @Schema(description = "User email", example = "email@mail.com")
+    @NotNull(message = "DTO user: LOGIN(Email) cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     @Length(max = 255, message = "DTO user: LOGIN must be smaller than 255 symb", groups = {OnUpdateProcess.class, OnCreateProcess.class})
-    String login;
+    String email;
 
-    @Schema(description = "User password", example = "123")
+    @Schema(description = "User password", example = "123") // в теории это можно перенести в JsonProperty и наоборот
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //не игнорим, а выставляем разрешение только записи
     @NotNull(message = "DTO user: PASSWORD cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     String password;

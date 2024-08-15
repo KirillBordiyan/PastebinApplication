@@ -18,7 +18,7 @@ public class UserFile {
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "nick_name", nullable = false)
     UserEntity owner;
 
     @Column(name = "fileName", nullable = false)

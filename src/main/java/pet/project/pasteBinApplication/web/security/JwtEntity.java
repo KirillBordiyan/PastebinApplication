@@ -15,9 +15,8 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtEntity implements UserDetails {
 
-    UUID userId;
-    String userName;
-    String login;
+    String nickName;
+    String email;
     String password;
     Collection<? extends SimpleGrantedAuthority> authorities;
 
@@ -33,6 +32,6 @@ public class JwtEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 }

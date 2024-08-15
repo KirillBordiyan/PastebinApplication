@@ -25,30 +25,30 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserEntity getById(UUID userId) {
-        return userRepository
-                .findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public UserEntity getById(UUID userId) {
+//        return userRepository
+//                .findByUserId(userId)
+//                .orElseThrow(() -> new ResourceNotFoundException("User not found (by ID)"));
+//    }
 
     @Override
     @Transactional(readOnly = true)
-    public UserEntity getByLogin(String login) {
-        return userRepository
-                .findByLogin(login)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public UserEntity getByNickName(String nickName) {
+        return userRepository.findByNickName(nickName)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found (by name)"));
     }
+
 
     @Override
     @Transactional
     public UserEntity updateUser(UserEntity userEntity) {
 
-        if(Objects.isNull(userEntity.getUserName())){
+        if(Objects.isNull(userEntity.getNickName())){
             throw new IllegalStateException("UPDATE: User name must not be null!");
         }
-        if(Objects.isNull(userEntity.getLogin())){
+        if(Objects.isNull(userEntity.getEmail())){
             throw new IllegalStateException("UPDATE: Login must not be null!");
         }
         if(Objects.isNull(userEntity.getPassword())){
@@ -69,11 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserEntity createUser(UserEntity userEntity) {
-        if(Objects.isNull(userEntity.getUserName())){
-            throw new IllegalStateException("CREATE: User name must not be null!");
+        if(Objects.isNull(userEntity.getNickName())){
+            throw new IllegalStateException("CREATE: User display name must not be null!");
         }
-        if(Objects.isNull(userEntity.getLogin())){
-            throw new IllegalStateException("CREATE: Login must not be null!");
+        if(Objects.isNull(userEntity.getEmail())){
+            throw new IllegalStateException("CREATE: Email must not be null!");
         }
         if(Objects.isNull(userEntity.getPassword())){
             throw new IllegalStateException("CREATE: Password must not be null!");
@@ -81,10 +81,7 @@ public class UserServiceImpl implements UserService {
         if(Objects.isNull(userEntity.getPasswordConfirm())){
             throw new IllegalStateException("CREATE: Password confirm must not be null!");
         }
-//        if(Objects.isNull(userEntity.getRoles())){
-//            throw new IllegalStateException("CREATE: Roles must not be null!");
-//        }
-        if(userRepository.findByLogin(userEntity.getLogin()).isPresent()){
+        if(userRepository.findByNickName(userEntity.getNickName()).isPresent()){
             throw new IllegalStateException("CREATE: User already exists!");
         }
         if(!userEntity.getPassword().equals(userEntity.getPasswordConfirm())){
@@ -106,19 +103,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(String login) {
-        userRepository.deleteByLogin(login);
+    public void deleteUser(String nickName) {
+        userRepository.deleteByNickName(nickName);
     }
 
-//    @Override
-//    @Transactional
-//    public void deleteUser(UUID id) {
-//        userRepository.deleteById(id);
-//    }
 
     @Override
     @Transactional
-    public boolean isUserFileOwner(String login, Long fileId) {
-        return userRepository.isFileOwner(login, fileId);
+    public boolean isUserFileOwner(String nickName, Long fileId) {
+        return userRepository.isFileOwner(nickName, fileId);
     }
 }

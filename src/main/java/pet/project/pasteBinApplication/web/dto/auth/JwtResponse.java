@@ -5,17 +5,15 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.util.UUID;
-
 @Data
 @Schema(description = "Jwt Response class")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtResponse {
 
-    @Schema(description = "User ID", exampleClasses = UUID.class)
-    UUID userId;
-    @Schema(description = "Login", example = "email@mail.com")
-    String login;
+//    @Schema(description = "User ID", exampleClasses = UUID.class)
+//    UUID userId;
+//    @Schema(description = "email", example = "email@mail.com")
+//    String email;
     @Schema(description = "Access Token")
     String access;
     @Schema(description = "Refresh Token")

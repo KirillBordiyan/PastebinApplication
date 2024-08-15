@@ -8,9 +8,9 @@ import java.util.UUID;
 public interface UsersFilesService {
 
     UserFile getByFileName(String fileName);
-    List<UserFile> getAllByLogin(String login);
+    List<UserFile> getAllByNickName(String nickName);
     UserFile updateFile(UserFile userFile);
-    UserFile createFile(UserFile userFile, UUID userId);
+    UserFile createFile(UserFile userFile, String nickName);
 
     void deleteFile(Long id);
 

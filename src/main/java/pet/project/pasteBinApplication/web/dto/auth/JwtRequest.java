@@ -11,8 +11,8 @@ import java.util.UUID;
 @Schema(description = "Jwt Request class")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtRequest {
-    @Schema(description = "User ID", example = "email@mail.com")
-    String login;
+    @Schema(description = "User email", example = "email@mail.com")
+    String email;
     @Schema(description = "User password encode", example = "123")
     String password;
 }

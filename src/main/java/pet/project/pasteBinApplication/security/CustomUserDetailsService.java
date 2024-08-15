@@ -16,9 +16,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String nickName) throws UsernameNotFoundException {
         UserEntity userEntity = userService
-                .getByLogin(login);
+                .getByNickName(nickName);
 
         return JwtEntityFactory.create(userEntity);
     }

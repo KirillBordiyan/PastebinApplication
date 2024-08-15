@@ -1,8 +1,6 @@
 package pet.project.pasteBinApplication.model.user;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,22 +18,18 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity {
 
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    @Column(name = "userId")
+//    UUID userId;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "userId")
-    UUID userId;
+    @Column(name = "nick_name", unique = true, nullable = false) //БЕЗ ПРОБЕЛОВ И СИМВОЛОВ?? =  никнейм
+    String nickName; //брать как уникальное имя пользователя (displayName)
 
-    @Column(name = "userName", nullable = false)
-    String userName;
 
-    @JoinTable(
-            name = "user_login_info",
-            joinColumns = @JoinColumn(name = "login"),
-            inverseJoinColumns = @JoinColumn(name = "password"),
-            schema = "pastebin_schema"
-    )
-    @Column(name = "login", unique = true, nullable = false)
-    String login;
+    @Column(name = "email", unique = true, nullable = false)
+    String email;
 
 
     @Column(name = "password", nullable = false)

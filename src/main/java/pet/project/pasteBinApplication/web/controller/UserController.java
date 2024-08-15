@@ -55,28 +55,28 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Get userDto by login"
+            summary = "Get userDto by nick name"
     )
-    @GetMapping("/{login}")
-    public UserDto getByLogin(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "login") String login) {
-        UserEntity userEntity = userService.getByLogin(login);
+    @GetMapping("/{nickName}") // -> @RequestBody UserAnotherDto dto (login)
+    public UserDto getByLogin(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "nickName") String nickName) {
+        UserEntity userEntity = userService.getByNickName(nickName);
         return userMapper.toDto(userEntity);
     }
 
     @Operation(
-            summary = "Delete user by login"
+            summary = "Delete user by nick name"
     )
-    @DeleteMapping("/{login}")
-    public void deleteByLogin(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "login") String login) {
-        userService.deleteUser(login);
+    @DeleteMapping("/{displayName}")
+    public void deleteByDisplayName(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "displayName") String displayName) {
+        userService.deleteUser(displayName);
     }
 
     @Operation(
-            summary = "Get all users files (dto) by user login"
+            summary = "Get all users files (dto) by user nick name"
     )
-    @GetMapping("/{login}/files")
-    public List<UsersFileDto> getFilesByUserLogin(@PathVariable(name = "login") String login) {
-        List<UserFile> files = filesService.getAllByLogin(login);
+    @GetMapping("/{nickName}/files")
+    public List<UsersFileDto> getFilesByUserLogin(@PathVariable(name = "nickName") String nickName) {
+        List<UserFile> files = filesService.getAllByNickName(nickName);
         return fileMapper.toListDto(files);
     }
 
@@ -84,12 +84,12 @@ public class UserController {
     @Operation(
             summary = "Create fileDto"
     )
-    @PostMapping("/{login}/files")
-    public UsersFileDto createFile(@PathVariable(name = "login") String login,
+    @PostMapping("/{nickName}/files")
+    public UsersFileDto createFile(@PathVariable(name = "nickName") String nickName,
                                    @Validated(OnCreateProcess.class) @RequestBody UsersFileDto dto) {
         UserFile file = fileMapper.toEntity(dto);
-        UserEntity userEntity = userService.getByLogin(login);
-        UserFile createdFile = filesService.createFile(file, userEntity.getUserId());
+        UserEntity userEntity = userService.getByNickName(nickName);
+        UserFile createdFile = filesService.createFile(file, userEntity.getNickName());
         return fileMapper.toDto(createdFile);
     }
 }

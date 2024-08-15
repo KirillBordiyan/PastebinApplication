@@ -6,12 +6,10 @@ import java.util.UUID;
 
 public interface UserService {
 
-    UserEntity getById(UUID userId);
-    UserEntity getByLogin(String login);
+//    UserEntity getById(UUID userId);
+    UserEntity getByNickName(String nickName);
     UserEntity updateUser(UserEntity userEntity);
     UserEntity createUser(UserEntity userEntity);
-    void deleteUser(String login);
-//    void deleteUser(Long id);
-
-    boolean isUserFileOwner(String login, Long fileId);
+    void deleteUser(String displayName);
+    boolean isUserFileOwner(String displayName, Long fileId);
 }

@@ -16,8 +16,8 @@ public interface UsersFilesRepository extends JpaRepository<UserFile, Long> {
     @Query(nativeQuery = true,
     value = "select f " +
             "from users_files f" +
-            "where f.user_id = (select u from users u where u.login = ?)")
-    List<UserFile> findAllUsersFilesByLogin(String login);
+            "where f.nick_name = (select u from users u where u.nick_name = ?)")
+    List<UserFile> findAllUsersFilesByNickName(String nickName);
 
 //    @Query(nativeQuery = true,
 //    value = "insert into users_files (fileId, userId) values (?, ?)")
@@ -26,6 +26,4 @@ public interface UsersFilesRepository extends JpaRepository<UserFile, Long> {
 //    void update(UserFile userFile);
 //    void create(UserFile userFile);
 //    void delete(Long id);
-
-
 }
