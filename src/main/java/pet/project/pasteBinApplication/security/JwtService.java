@@ -2,6 +2,7 @@ package pet.project.pasteBinApplication.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,9 @@ public class JwtService {
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generatedAccessToken(String nickName, Set<Role> roles) { //метод генерации токена
-        Map<String, String> claims = new HashMap<>();
-        claims.put("authorities", getRoles(roles).toString());
+    public String generatedAccessToken(String nickName, Set<Role> roles) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("authorities", getRoles(roles));
         claims.put("nickName", String.valueOf(nickName));
 
         return Jwts.builder()
@@ -53,7 +54,7 @@ public class JwtService {
 
 
     public String generateRefreshToken(String nickName){
-        Map<String, String> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         claims.put("nickName", String.valueOf(nickName));
 
         return Jwts.builder()
@@ -70,11 +71,9 @@ public class JwtService {
         if(isTokenValid(refreshToken)){
             throw new AccessDeniedException();
         }
-        String nickName = getUserId(refreshToken);
+        String nickName = getUserNickName(refreshToken);
         UserEntity user = userService.getByNickName(nickName);
 
-//        response.setUserId(id);
-//        response.setEmail(user.getEmail());
         response.setAccess(generatedAccessToken(user.getNickName(), user.getRoles()));
         response.setRefresh(generateRefreshToken(user.getNickName()));
 
@@ -95,9 +94,8 @@ public class JwtService {
                 .getPayload();
     }
 
-    private String getUserId(String jwt){
+    private String getUserNickName(String jwt){
         Claims claims = getClaims(jwt);
-//        return UUID.fromString((String) claims.get("nickName"));
         return String.valueOf((String) claims.get("nickName"));
     }
 

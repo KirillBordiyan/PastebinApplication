@@ -25,19 +25,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public UserEntity getById(UUID userId) {
-//        return userRepository
-//                .findByUserId(userId)
-//                .orElseThrow(() -> new ResourceNotFoundException("User not found (by ID)"));
-//    }
 
     @Override
     @Transactional(readOnly = true)
     public UserEntity getByNickName(String nickName) {
         return userRepository.findByNickName(nickName)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found (by name)"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserEntity getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found (by login/email)"));
     }
 
 
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(String nickName) {
+    public void deleteUserByNickName(String nickName) {
         userRepository.deleteByNickName(nickName);
     }
 

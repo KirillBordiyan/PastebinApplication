@@ -24,6 +24,9 @@ public class UserFile {
     @Column(name = "fileName", nullable = false)
     String fileName;
 
+//    @Column(name = "access level", nullable = false)
+//    String level; // close, readOnly, accessAll
+
     String bucketName; //если нет в env
     String fileType; // мб оставить (enum)
 }

@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByNickName(String nickName);
+    Optional<UserEntity> findByEmail(String email);
 
     void deleteByNickName(String nickName);
 
@@ -22,6 +23,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             "   from users " +
             "   where u.nick_name = :nickName)")
     boolean isFileOwner(String nickName, Long fileId);
-
-//    Optional<UserEntity> findByUserId(UUID id);
 }
