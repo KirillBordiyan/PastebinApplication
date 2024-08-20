@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import pet.project.pasteBinApplication.exceptions.AccessDeniedException;
 import pet.project.pasteBinApplication.exceptions.ResourceMappingException;
 import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
@@ -82,6 +83,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionResponse handleAuthenticationException(AuthenticationException e){
         return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "Authentication was failed!");
+    }
+
+    @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionResponse handleUnauthorizedException(HttpClientErrorException.Unauthorized e){
+        return new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
 
     @ExceptionHandler({AccessDeniedException.class, org.springframework.security.access.AccessDeniedException.class})

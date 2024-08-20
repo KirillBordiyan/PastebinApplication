@@ -25,16 +25,12 @@ public class AuthServiceImpl implements AuthService {
         JwtResponse response = new JwtResponse();
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-//                        loginRequest.getNickName(),
                         loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
-//        UserEntity user = userService.getByNickName(loginRequest.getNickName());
         UserEntity user = userService.getByEmail(loginRequest.getEmail());
 
-//        response.setUserId(user.getUserId());
-//        response.setEmail(user.getEmail());
         response.setAccess(jwtService.generatedAccessToken(user.getNickName(), user.getRoles()));
         response.setRefresh(jwtService.generateRefreshToken(user.getNickName()));
 

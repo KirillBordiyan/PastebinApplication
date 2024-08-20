@@ -21,6 +21,7 @@ import pet.project.pasteBinApplication.web.dto.auth.JwtResponse;
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -101,12 +102,16 @@ public class JwtService {
 
     public boolean isTokenValid(String jwt){
         Claims claims = getClaims(jwt);
-        return !claims.getExpiration().after(Date.from(Instant.now()));
+        System.out.println(claims.getExpiration());
+        System.out.println(claims.getIssuedAt());
+        return claims.getExpiration().after(Date.from(Instant.now()));
     }
 
     public String extractUsername(String jwt){
         Claims claims = getClaims(jwt);
-        return claims.getSubject();
+        UserEntity byNickName = userService.getByNickName(claims.getSubject());
+//        return claims.getSubject();
+        return byNickName.getEmail();
     }
 
     public Authentication getAuthentication(String jwt){

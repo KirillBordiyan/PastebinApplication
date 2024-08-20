@@ -58,8 +58,9 @@ public class UserController {
             summary = "Get userDto by nick name"
     )
     @GetMapping("/{nickName}") // -> @RequestBody UserAnotherDto dto (login)
-    public UserDto getByLogin(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "nickName") String nickName) {
+    public UserDto getByNickName(@PathVariable(name = "nickName") String nickName) {
         UserEntity userEntity = userService.getByNickName(nickName);
+        System.out.println("sdsds");
         return userMapper.toDto(userEntity);
     }
 
@@ -67,7 +68,7 @@ public class UserController {
             summary = "Delete user by nick name"
     )
     @DeleteMapping("/{nickName}")
-    public void deleteByNickName(/*@PathVariable(name = "id") UUID id*/ @PathVariable(name = "nickName") String nickName) {
+    public void deleteByNickName(@PathVariable(name = "nickName") String nickName) {
         userService.deleteUserByNickName(nickName);
     }
 
@@ -75,7 +76,7 @@ public class UserController {
             summary = "Get all users files (dto) by user nick name"
     )
     @GetMapping("/{nickName}/files")
-    public List<UsersFileDto> getFilesByUserLogin(@PathVariable(name = "nickName") String nickName) {
+    public List<UsersFileDto> getFilesByUserNickName(@PathVariable(name = "nickName") String nickName) {
         List<UserFile> files = filesService.getAllByNickName(nickName);
         return fileMapper.toListDto(files);
     }

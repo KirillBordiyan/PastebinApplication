@@ -36,20 +36,20 @@ public class SecurityConfiguration {
                 .sessionManagement(management ->
                     management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .authorizeHttpRequests(request -> {
+                    request.requestMatchers("/api/auth/**").permitAll();
+                    request.requestMatchers("/swagger/**").permitAll();
+                    request.anyRequest().authenticated();
+                })
                 .exceptionHandling(handling -> {
                     handling.authenticationEntryPoint((request, response, authException) -> {
                         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                        response.getWriter().write("UNAUTHORIZED");
+                        response.getWriter().write("UNAUTHORIZED --> Secured Level");
                     });
                     handling.accessDeniedHandler((request, response, accessDeniedException) -> {
                         response.setStatus(HttpStatus.FORBIDDEN.value());
                         response.getWriter().write("UNAUTHORIZED --> FORBIDDEN");
                     });
-                })
-                .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/api/auth/**").permitAll();
-                    request.requestMatchers("/swagger/**").permitAll();
-                    request.anyRequest().authenticated();
                 })
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
