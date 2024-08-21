@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UsersFilesRepository extends JpaRepository<UserFile, Long> {
+public interface UserFilesRepository extends JpaRepository<UserFile, Long> {
 //    Optional<UserFile> findById(Long id);
     Optional<UserFile> findByFileName(String fileName);
 
@@ -18,6 +18,8 @@ public interface UsersFilesRepository extends JpaRepository<UserFile, Long> {
             "from users_files f" +
             "where f.nick_name = (select u from users u where u.nick_name = ?)")
     List<UserFile> findAllUsersFilesByNickName(String nickName);
+
+    void deleteByFileName(String fileName);
 
 //    @Query(nativeQuery = true,
 //    value = "insert into users_files (fileId, userId) values (?, ?)")

@@ -7,7 +7,7 @@ import pet.project.pasteBinApplication.web.dto.file.UsersFileDto;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface UtilityFileMapper {
+public interface UserFileMapper {
     UsersFileDto toDto(UserFile file);
     List<UsersFileDto> toListDto(List<UserFile> files);
     UserFile toEntity(UsersFileDto dto);

@@ -2,7 +2,6 @@ package pet.project.pasteBinApplication.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import pet.project.pasteBinApplication.web.dto.auth.JwtResponse;
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -110,7 +108,6 @@ public class JwtService {
     public String extractUsername(String jwt){
         Claims claims = getClaims(jwt);
         UserEntity byNickName = userService.getByNickName(claims.getSubject());
-//        return claims.getSubject();
         return byNickName.getEmail();
     }
 

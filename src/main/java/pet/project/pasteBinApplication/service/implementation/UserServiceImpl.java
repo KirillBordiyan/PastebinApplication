@@ -1,6 +1,10 @@
 package pet.project.pasteBinApplication.service.implementation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +19,6 @@ import pet.project.pasteBinApplication.service.UserService;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "UserService::getByNickName", key = "#nickName")
     public UserEntity getByNickName(String nickName) {
         return userRepository.findByNickName(nickName)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found (by name)"));
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "UserService::getByEmail", key = "#email")
     public UserEntity getByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found (by login/email)"));
@@ -43,6 +48,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @Caching(put = {
+            @CachePut(value = "UserService::getByNickName", key = "#userEntity.nickName"),
+            @CachePut(value = "UserService::getByEmail", key = "#userEntity.email")
+    })
     public UserEntity updateUser(UserEntity userEntity) {
 
         if(Objects.isNull(userEntity.getNickName())){
@@ -68,6 +77,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @Caching(cacheable = {
+            @Cacheable(value = "UserService::getByNickName", key = "#userEntity.nickName"),
+            @Cacheable(value = "UserService::getByEmail", key = "#userEntity.email")
+    })
     public UserEntity createUser(UserEntity userEntity) {
         if(Objects.isNull(userEntity.getNickName())){
             throw new IllegalStateException("CREATE: User display name must not be null!");
@@ -103,6 +116,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "UserService::getByNickName", key = "#nickName")
     public void deleteUserByNickName(String nickName) {
         userRepository.deleteByNickName(nickName);
     }
@@ -110,6 +124,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @Cacheable(value = "UserService::isUserFileOwner", key = "#nickName" +'.'+"#fileId")
     public boolean isUserFileOwner(String nickName, Long fileId) {
         return userRepository.isFileOwner(nickName, fileId);
     }

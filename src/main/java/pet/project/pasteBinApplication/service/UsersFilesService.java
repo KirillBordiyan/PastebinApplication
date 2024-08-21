@@ -12,6 +12,6 @@ public interface UsersFilesService {
     UserFile updateFile(UserFile userFile);
     UserFile createFile(UserFile userFile, String nickName);
 
-    void deleteFile(Long id);
+    void deleteByFileName(String fileName);
 
 }

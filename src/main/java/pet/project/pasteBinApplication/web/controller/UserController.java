@@ -14,7 +14,7 @@ import pet.project.pasteBinApplication.web.dto.user.UserDto;
 import pet.project.pasteBinApplication.web.dto.validation.OnCreateProcess;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
 import pet.project.pasteBinApplication.web.mappers.UserMapper;
-import pet.project.pasteBinApplication.web.mappers.UtilityFileMapper;
+import pet.project.pasteBinApplication.web.mappers.UserFileMapper;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class UserController {
     private final UserService userService;
     private final UsersFilesService filesService;
     private final UserMapper userMapper;
-    private final UtilityFileMapper fileMapper;
+    private final UserFileMapper fileMapper;
 
 
     /*FIXME дописать как понадобятся методы

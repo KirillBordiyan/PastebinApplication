@@ -1,0 +1,51 @@
+version: '3.9'
+
+volumes:
+  cache:
+    driver: local
+
+services:
+  app:
+    build:
+      context: .
+    container_name: pastebin-application
+    depends_on:
+      - db
+#      - redis
+#      - minio
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/pastebin?currentSchema=pastebin_schema
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+    ports:
+      - '8080:8080'
+
+  db:
+    image: postgres:13-alpine
+    container_name: pastebin-db
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=pastebin
+    volumes:
+      - ./src/main/resources/db-init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7.4-rc-alpine
+    restart: always
+    container_name: redis
+    ports:
+      - '6379:6379'
+    environment:
+      - REDIS_PASSWORD=d2V1b3F3dHdlYmZn
+      - REDIS_PORT=6379
+    volumes:
+      - cache:/data
+
+
+#      - REDIS_DATABASES=1
+#    command: redis-server --save 20 1 --loglevel warning --requirepass d2V1b3F3dHdlYmZn
+
+#        допилить редис (аннотации и конфиг)
+#        сделать liquidebase
+#        потестить в докере всю работу

@@ -6,26 +6,23 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.redis.core.RedisHash;
 import pet.project.pasteBinApplication.model.file.UserFile;
 
+import java.io.Serializable;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users", schema = "pastebin_schema")
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserEntity {
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    @Column(name = "userId")
-//    UUID userId;
+@RedisHash(value = "UserERedis")
+public class UserEntity implements Serializable {
 
     @Id
     @Column(name = "nick_name", unique = true, nullable = false) //БЕЗ ПРОБЕЛОВ И СИМВОЛОВ?? =  никнейм
-    String nickName; //брать как уникальное имя пользователя (displayName)
+    String nickName; //брать как уникальное имя пользователя
 
 
     @Column(name = "email", unique = true, nullable = false)

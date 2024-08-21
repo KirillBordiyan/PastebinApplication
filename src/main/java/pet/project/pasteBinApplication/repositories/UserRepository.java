@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import pet.project.pasteBinApplication.model.user.UserEntity;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
