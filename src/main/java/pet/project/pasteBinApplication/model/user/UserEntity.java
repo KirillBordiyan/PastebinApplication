@@ -3,10 +3,8 @@ package pet.project.pasteBinApplication.model.user;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.redis.core.RedisHash;
 import pet.project.pasteBinApplication.model.file.UserFile;
 
 import java.io.Serializable;
@@ -14,10 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "pastebin_schema")
-@Getter
-@Setter
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@RedisHash(value = "UserERedis")
+//@RedisHash(value = "UserERedis")
 public class UserEntity implements Serializable {
 
     @Id

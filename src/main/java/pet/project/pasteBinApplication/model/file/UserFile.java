@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@RedisHash("UserFRedis")
+//@RedisHash("UserFRedis")
 public class UserFile implements Serializable {
 
     @Id

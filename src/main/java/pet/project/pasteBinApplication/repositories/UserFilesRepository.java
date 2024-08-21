@@ -21,11 +21,4 @@ public interface UserFilesRepository extends JpaRepository<UserFile, Long> {
 
     void deleteByFileName(String fileName);
 
-//    @Query(nativeQuery = true,
-//    value = "insert into users_files (fileId, userId) values (?, ?)")
-//    void assignToUserById(Long fileId, Long userId);
-
-//    void update(UserFile userFile);
-//    void create(UserFile userFile);
-//    void delete(Long id);
 }

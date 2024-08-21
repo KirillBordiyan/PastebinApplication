@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "UserService::getByNickName", key = "#nickName")
+    @CacheEvict(value = "UserService::getByNickName", key = "#nickName") //test
     public void deleteUserByNickName(String nickName) {
         userRepository.deleteByNickName(nickName);
     }

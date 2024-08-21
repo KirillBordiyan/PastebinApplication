@@ -11,7 +11,7 @@ services:
     container_name: pastebin-application
     depends_on:
       - db
-#      - redis
+      - redis
 #      - minio
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/pastebin?currentSchema=pastebin_schema
@@ -31,7 +31,7 @@ services:
       - ./src/main/resources/db-init:/docker-entrypoint-initdb.d
 
   redis:
-    image: redis:7.4-rc-alpine
+    image: redis:latest
     restart: always
     container_name: redis
     ports:
@@ -39,6 +39,7 @@ services:
     environment:
       - REDIS_PASSWORD=d2V1b3F3dHdlYmZn
       - REDIS_PORT=6379
+#    command: redis-server --save 20 1 --loglevel warning --requirepass d2V1b3F3dHdlYmZn
     volumes:
       - cache:/data
 

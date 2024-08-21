@@ -16,6 +16,8 @@
 #само по себе приложение работает с бд в pastebin-db-only
 # в композ файле свой контейнер с БД;
 # но есть проблема: параллельно всегда должен быть запущен редис, тк по коду проверка идет в нем.
+server:
+  port: 8080
 
 springdoc:
   override-with-generic-response: false
@@ -23,6 +25,7 @@ springdoc:
     path: /swagger/pastebin-ui
   api-docs:
     path: /swagger/pastebin-api
+
 
 spring:
 #для sql, я удалил, тк мне лучше сделать входные в коде
@@ -37,10 +40,10 @@ spring:
 
   cache:
     type: redis
-    cache-names: redis-cache
   data:
+    #spring.redis.host=container_name
     redis:
-      host: localhost
+      host: redis #ЗДЕСЬ ДОЛЖЕН БЫТЬ CONTAINER_NAME С REDIS, ТК ХОСТ НЕ ЛОКАЛЬНО
       port: 6379
       password: d2V1b3F3dHdlYmZn
 

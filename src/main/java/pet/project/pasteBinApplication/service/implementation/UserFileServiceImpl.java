@@ -23,7 +23,7 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "UserFileService::getByFileName", key = "#fileName")
+    @Cacheable(value = "UserFileService=getByFileName", key = "#fileName")
     public UserFile getByFileName(String fileName) {
         return userFilesRepository
                 .findByFileName(fileName)
@@ -41,7 +41,7 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional
-    @CachePut(value = "UserFileService::getByFileName", key = "#userFile.fileName")
+    @CachePut(value = "UserFileService=getByFileName", key = "#userFile.fileName")
     public UserFile updateFile(UserFile userFile) {
         userFilesRepository.save(userFile);
         return userFile;
@@ -49,7 +49,7 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional
-    @Cacheable(value = "UserFileService::getByFileName", key = "#userFile.fileName")
+    @Cacheable(value = "UserFileService=getByFileName", key = "#userFile.fileName")
     public UserFile createFile(UserFile userFile, String nickName) {
         userFilesRepository.save(userFile);
         return userFile;
@@ -57,7 +57,7 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "UserFileService::getByFileName", key = "#fileName")
+    @CacheEvict(value = "UserFileService=getByFileName", key = "#fileName")
     public void deleteByFileName(String fileName) {
         userFilesRepository.deleteByFileName(fileName);
     }
