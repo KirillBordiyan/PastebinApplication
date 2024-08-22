@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     })
     public UserEntity createUser(UserEntity userEntity) {
         if(Objects.isNull(userEntity.getNickName())){
-            throw new IllegalStateException("CREATE: User display name must not be null!");
+            throw new IllegalStateException("CREATE: User nick name must not be null!");
         }
         if(Objects.isNull(userEntity.getEmail())){
             throw new IllegalStateException("CREATE: Email must not be null!");
@@ -103,12 +103,16 @@ public class UserServiceImpl implements UserService {
 
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
         userEntity.setPasswordConfirm(encoder.encode(userEntity.getPasswordConfirm()));
-        Role role = roleRepository.findByRoleName("USER");
-        Set<Role> roles = Set.of(role);
-        Set<UserFile> files = new HashSet<>();
 
-        userEntity.setRoles(roles);
+        if(Objects.isNull(userEntity.getRoles())) {
+            Role role = roleRepository.findByRoleName("USER");
+            Set<Role> roles = Set.of(role);
+            userEntity.setRoles(roles);
+        }
+
+        Set<UserFile> files = new HashSet<>();
         userEntity.setUsersFiles(files);
+
         userRepository.save(userEntity);
 
         return userEntity;

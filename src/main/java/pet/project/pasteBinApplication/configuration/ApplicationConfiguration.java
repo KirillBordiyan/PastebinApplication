@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.cache.CacheManager;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 //import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -18,6 +19,12 @@ import org.springframework.context.annotation.Configuration;
 //import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 //import org.springframework.data.redis.serializer.RedisSerializationContext;
 //import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import pet.project.pasteBinApplication.prop.MinioProperties;
 
 import java.time.Duration;
@@ -56,32 +63,17 @@ public class ApplicationConfiguration {
                 );
     }
 
-//    @Bean
-//    public CacheManager cacheManager(RedisConnectionFactory factory){
-//
-//        RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair
-//                .fromSerializer(new GenericJackson2JsonRedisSerializer());
-//        RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig()
-//                .serializeValuesWith(pair)
-//                .entryTtl(Duration.ofHours(72));
-//
-//        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
-//                .cacheDefaults(conf).build();
-//
-//
-////        RedisCacheConfiguration config = RedisCacheConfiguration
-////                .defaultCacheConfig()
-////                .serializeKeysWith(
-////                        RedisSerializationContext
-////                                .SerializationPair.fromSerializer(new StringRedisSerializer())
-////                )
-////                .serializeValuesWith(RedisSerializationContext
-////                        .SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())
-////                );
-////
-////        return RedisCacheManager.builder(factory)
-////                .cacheDefaults(config)
-////                .build();
-//    }
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory factory){
+
+        RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair
+                .fromSerializer(new GenericJackson2JsonRedisSerializer());
+        RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig()
+                .serializeValuesWith(pair)
+                .entryTtl(Duration.ofHours(6));
+
+        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
+                .cacheDefaults(conf).build();
+    }
 
 }

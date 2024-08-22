@@ -14,9 +14,9 @@ public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "roleId", nullable = false)
+    @Column(name = "role_id", nullable = false)
     private Long roleId;
-    @Column(name = "roleName", nullable = false)
+    @Column(name = "role_name", nullable = false)
     private String roleName;
 
     @Override

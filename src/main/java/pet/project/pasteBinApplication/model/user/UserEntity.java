@@ -37,8 +37,8 @@ public class UserEntity implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "userId", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "roleId", nullable = false),
+            joinColumns = @JoinColumn(name = "user_nick_name", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false),
             schema = "pastebin_schema"
     )
     Set<Role> roles;

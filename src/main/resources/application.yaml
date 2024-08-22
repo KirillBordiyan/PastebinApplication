@@ -41,7 +41,6 @@ spring:
   cache:
     type: redis
   data:
-    #spring.redis.host=container_name
     redis:
       host: redis #ЗДЕСЬ ДОЛЖЕН БЫТЬ CONTAINER_NAME С REDIS, ТК ХОСТ НЕ ЛОКАЛЬНО
       port: 6379

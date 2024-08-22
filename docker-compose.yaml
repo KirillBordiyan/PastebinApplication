@@ -39,14 +39,5 @@ services:
     environment:
       - REDIS_PASSWORD=d2V1b3F3dHdlYmZn
       - REDIS_PORT=6379
-#    command: redis-server --save 20 1 --loglevel warning --requirepass d2V1b3F3dHdlYmZn
     volumes:
       - cache:/data
-
-
-#      - REDIS_DATABASES=1
-#    command: redis-server --save 20 1 --loglevel warning --requirepass d2V1b3F3dHdlYmZn
-
-#        допилить редис (аннотации и конфиг)
-#        сделать liquidebase
-#        потестить в докере всю работу
