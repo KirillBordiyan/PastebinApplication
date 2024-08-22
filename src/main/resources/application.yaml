@@ -28,6 +28,10 @@ springdoc:
 
 
 spring:
+
+  config:
+    import: optional:file:.env[.properties]
+
 #для sql, я удалил, тк мне лучше сделать входные в коде
 #мб к сдаче поменяю
 #  sql:
@@ -42,18 +46,15 @@ spring:
     type: redis
   data:
     redis:
-      host: redis #ЗДЕСЬ ДОЛЖЕН БЫТЬ CONTAINER_NAME С REDIS, ТК ХОСТ НЕ ЛОКАЛЬНО
+      host: ${REDIS_HOST} #ЗДЕСЬ ДОЛЖЕН БЫТЬ CONTAINER_NAME С REDIS, ТК ХОСТ НЕ ЛОКАЛЬНО
       port: 6379
-      password: d2V1b3F3dHdlYmZn
+      password: ${REDIS_PASSWORD}
 
 
   datasource:
-#    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}
-    url: jdbc:postgresql://localhost:5432/pastebin?currentSchema=pastebin_schema
-#    username: ${POSTGRES_USERNAME}
-    username: root
-#    password: ${POSTGRES_PASSWORD}
-    password: 1234
+    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -67,21 +68,17 @@ spring:
   #чисто админовское
   #login: minioadmin <---> pass: minioadmin
 minio:
-#    bucket: ${MINIO_BUCKET}
-  bucket: bucket1
-#    url: ${MINIO_URL}
-  url: https://localhost:9000
-#    accessKey: ${MINIO_ACCESS_KEY}  #wnoi7e4iTFsMQXPosuNp
-  accessKey: minioadmin  #wnoi7e4iTFsMQXPosuNp
-#    secretKey: ${MINIO_SECRET_KEY}  #6xlDXT65EEE7Mf5LbAKatHggdQdbU3kdThpLpbxy
-  secretKey: minioadmin  #6xlDXT65EEE7Mf5LbAKatHggdQdbU3kdThpLpbxy
+  bucket: ${MINIO_BUCKET}
+  url: ${MINIO_URL} #либо сюда, либо в композе указывать может надо будет указать имя контейнера
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}
 
 
 security:
   jwt:
-    secret: "2361FECB0791BDC153E59305AD2389A3D6BB19EA3257EF0E0404079578DD1ECC"
-    access: 3600000 #1#час
-    refresh: 2592000000 #30 #дней
+    secret: ${JWT_SECRET}
+    access: 1 #${JWT_ACCESS} #часов
+    refresh: 30 #${JWT_REFRESH} #дней
 
 
 

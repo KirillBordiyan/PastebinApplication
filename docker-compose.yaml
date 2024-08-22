@@ -13,31 +13,33 @@ services:
       - db
       - redis
 #      - minio
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/pastebin?currentSchema=pastebin_schema
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=1234
+    env_file:
+      - .env
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/pastebin?currentSchema=pastebin_schema
+#      - SPRING_DATASOURCE_USERNAME=root
+#      - SPRING_DATASOURCE_PASSWORD=1234
     ports:
       - '8080:8080'
 
   db:
     image: postgres:13-alpine
-    container_name: pastebin-db
+    container_name: pastebin-db-docker #это хост
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=pastebin
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
     volumes:
       - ./src/main/resources/db-init:/docker-entrypoint-initdb.d
 
   redis:
     image: redis:latest
     restart: always
-    container_name: redis
+    container_name: redis-docker #и это хост
     ports:
       - '6379:6379'
     environment:
-      - REDIS_PASSWORD=d2V1b3F3dHdlYmZn
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=6379
     volumes:
       - cache:/data

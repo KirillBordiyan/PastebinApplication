@@ -19,6 +19,7 @@ import pet.project.pasteBinApplication.web.dto.auth.JwtResponse;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,11 +43,13 @@ public class JwtService {
         claims.put("authorities", getRoles(roles));
         claims.put("nickName", String.valueOf(nickName));
 
+        Instant validity = Instant.now()
+                .plus(properties.getAccess(), ChronoUnit.HOURS);
+
         return Jwts.builder()
                 .claims(claims)
                 .subject(nickName)
-                .issuedAt(Date.from(Instant.now()))
-                .expiration(Date.from(Instant.now().plusMillis(properties.getAccess())))
+                .expiration(Date.from(validity))
                 .signWith(generateKey())
                 .compact();
     }
@@ -56,11 +59,12 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("nickName", String.valueOf(nickName));
 
+        Instant validity = Instant.now()
+                .plus(properties.getRefresh(), ChronoUnit.DAYS);
         return Jwts.builder()
                 .claims(claims)
                 .subject(nickName)
-                .issuedAt(Date.from(Instant.now()))
-                .expiration(Date.from(Instant.now().plusMillis(properties.getRefresh())))
+                .expiration(Date.from(validity))
                 .signWith(generateKey())
                 .compact();
     }
