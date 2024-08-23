@@ -11,15 +11,17 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByNickName(String nickName);
+
     Optional<UserEntity> findByEmail(String email);
 
     void deleteByNickName(String nickName);
 
-    @Query(nativeQuery = true, value = "select file " +
-            "from users_files file" +
-            " where file.userFileId = :fileId and file.owner = " +
-            "   (select * " +
-            "   from users " +
-            "   where u.nick_name = :nickName)")
-    boolean isFileOwner(String nickName, Long fileId);
+    @Query(nativeQuery = true,
+            value = "select file.* " +
+                    "from users_files file " +
+                    "join users on file.owner = users.nick_name " +
+                    "where file.file_name = :fileName " +
+                    "and users.nick_name = :nickName"
+    )
+    boolean isFileOwner(String nickName, String fileName);
 }

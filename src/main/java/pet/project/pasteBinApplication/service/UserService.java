@@ -10,5 +10,5 @@ public interface UserService {
     UserEntity updateUser(UserEntity userEntity);
     UserEntity createUser(UserEntity userEntity);
     void deleteUserByNickName(String nickName);
-    boolean isUserFileOwner(String nickName, Long fileId);
+    boolean isUserFileOwner(String nickName, String fileName);
 }

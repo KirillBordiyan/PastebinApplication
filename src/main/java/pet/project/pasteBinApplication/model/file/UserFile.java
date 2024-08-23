@@ -18,14 +18,14 @@ public class UserFile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "userFileId")
+    @Column(name = "user_file_id")
     Long id;
 
     @ManyToOne
     @JoinColumn(name = "nick_name", nullable = false)
     UserEntity owner;
 
-    @Column(name = "fileName", nullable = false)
+    @Column(name = "file_name", nullable = false)
     String fileName;
 
 //    @Column(name = "access level", nullable = false)

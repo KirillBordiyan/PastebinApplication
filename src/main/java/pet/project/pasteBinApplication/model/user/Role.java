@@ -23,4 +23,8 @@ public class Role implements Serializable {
     public String toString() {
         return roleName;
     }
+
+//    public static Role of(String roleName){
+//        return new Role(, roleName);
+//    }
 }

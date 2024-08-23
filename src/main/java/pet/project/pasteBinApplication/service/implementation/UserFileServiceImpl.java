@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
@@ -18,12 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserFileServiceImpl implements UsersFilesService {
 
-    private final UserRepository userRepository;
     private final UserFilesRepository userFilesRepository;
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "UserFileService=getByFileName", key = "#fileName")
+    @Cacheable(value = "UserFileService::GetByFileName", key = "#fileName")
     public UserFile getByFileName(String fileName) {
         return userFilesRepository
                 .findByFileName(fileName)
@@ -34,14 +34,14 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional(readOnly = true)
-  //  @Cacheable(value = "UserFileService::getAllByNickName", key = "#nickName")
+    //  @Cacheable(value = "UserFileService::getAllByNickName", key = "#nickName")
     public List<UserFile> getAllByNickName(String nickName) {
         return userFilesRepository.findAllUsersFilesByNickName(nickName);
     }
 
     @Override
     @Transactional
-    @CachePut(value = "UserFileService=getByFileName", key = "#userFile.fileName")
+    @CachePut(value = "UserFileService::GetByFileName", key = "#userFile.fileName")
     public UserFile updateFile(UserFile userFile) {
         userFilesRepository.save(userFile);
         return userFile;
@@ -49,7 +49,7 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional
-    @Cacheable(value = "UserFileService=getByFileName", key = "#userFile.fileName")
+    @Cacheable(value = "UserFileService::GetByFileName", key = "#userFile.fileName")
     public UserFile createFile(UserFile userFile, String nickName) {
         userFilesRepository.save(userFile);
         return userFile;
@@ -57,7 +57,7 @@ public class UserFileServiceImpl implements UsersFilesService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "UserFileService=getByFileName", key = "#fileName")
+    @CacheEvict(value = "UserFileService::GetByFileName", key = "#fileName")
     public void deleteByFileName(String fileName) {
         userFilesRepository.deleteByFileName(fileName);
     }
