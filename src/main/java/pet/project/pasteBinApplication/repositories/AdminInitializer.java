@@ -8,7 +8,6 @@ import pet.project.pasteBinApplication.model.user.Role;
 import pet.project.pasteBinApplication.model.user.UserEntity;
 import pet.project.pasteBinApplication.service.UserService;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Component

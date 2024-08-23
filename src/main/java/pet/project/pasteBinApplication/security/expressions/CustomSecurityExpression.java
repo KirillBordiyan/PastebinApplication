@@ -10,9 +10,6 @@ import pet.project.pasteBinApplication.repositories.RoleRepository;
 import pet.project.pasteBinApplication.service.UserService;
 import pet.project.pasteBinApplication.web.security.JwtEntity;
 
-import java.util.Date;
-import java.util.Set;
-
 @Service("CustomSecurityExpression")
 @RequiredArgsConstructor
 public class CustomSecurityExpression {

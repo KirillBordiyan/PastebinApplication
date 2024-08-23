@@ -14,8 +14,8 @@ import pet.project.pasteBinApplication.web.dto.file.UsersFileDto;
 import pet.project.pasteBinApplication.web.dto.user.UserDto;
 import pet.project.pasteBinApplication.web.dto.validation.OnCreateProcess;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
-import pet.project.pasteBinApplication.web.mappers.UserMapper;
 import pet.project.pasteBinApplication.web.mappers.UserFileMapper;
+import pet.project.pasteBinApplication.web.mappers.UserMapper;
 
 import java.util.List;
 

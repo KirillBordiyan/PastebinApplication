@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
 import pet.project.pasteBinApplication.model.file.UserFile;
-import pet.project.pasteBinApplication.repositories.UserRepository;
 import pet.project.pasteBinApplication.repositories.UserFilesRepository;
 import pet.project.pasteBinApplication.service.UsersFilesService;
 

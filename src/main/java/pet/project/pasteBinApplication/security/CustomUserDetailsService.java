@@ -12,7 +12,7 @@ import pet.project.pasteBinApplication.web.security.JwtEntityFactory;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-
+    
     private final UserService userService;
 
     @Override
