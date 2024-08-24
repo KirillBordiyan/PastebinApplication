@@ -14,10 +14,9 @@ import pet.project.pasteBinApplication.model.user.UserEntity;
 import pet.project.pasteBinApplication.repositories.RoleRepository;
 import pet.project.pasteBinApplication.repositories.UserRepository;
 import pet.project.pasteBinApplication.service.UserService;
+import pet.project.pasteBinApplication.service.UsersFilesService;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UsersFilesService filesService;
 
 
     @Override
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
             userEntity.setRoles(roles);
         }
 
-        Set<UserFile> files = new HashSet<>();
+        List<String> files = new ArrayList<>();
         userEntity.setUsersFiles(files);
 
         userRepository.save(userEntity);
@@ -124,5 +124,16 @@ public class UserServiceImpl implements UserService {
 //    @Cacheable(value = "UserService::isUserFileOwner", key = "#nickName" + '.' + "#fileId")
     public boolean isUserFileOwner(String nickName, String fileName) {
         return userRepository.isFileOwner(nickName, fileName);
+    }
+
+
+    @Override
+    @Transactional
+    @CacheEvict(value = "UserService::GetByNickName", key = "#nickName")//test
+    public void uploadFile(String nickName, UserFile file) {
+        UserEntity user = getByNickName(nickName);
+        String fileName = filesService.upload(file);
+        user.getUsersFiles().add(fileName);
+        userRepository.save(user);
     }
 }

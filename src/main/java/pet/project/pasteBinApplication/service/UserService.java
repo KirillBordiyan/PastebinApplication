@@ -1,5 +1,6 @@
 package pet.project.pasteBinApplication.service;
 
+import pet.project.pasteBinApplication.model.file.UserFile;
 import pet.project.pasteBinApplication.model.user.UserEntity;
 
 public interface UserService {
@@ -11,4 +12,6 @@ public interface UserService {
     UserEntity createUser(UserEntity userEntity);
     void deleteUserByNickName(String nickName);
     boolean isUserFileOwner(String nickName, String fileName);
+
+    void uploadFile(String nickName, UserFile file);
 }

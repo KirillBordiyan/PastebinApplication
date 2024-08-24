@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import pet.project.pasteBinApplication.exceptions.AccessDeniedException;
+import pet.project.pasteBinApplication.exceptions.FileUploadException;
 import pet.project.pasteBinApplication.exceptions.ResourceMappingException;
 import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
 
@@ -83,6 +84,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionResponse handleAuthenticationException(AuthenticationException e){
         return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "Authentication was failed!");
+    }
+
+    @ExceptionHandler(FileUploadException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleUploadException(FileUploadException e){
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)

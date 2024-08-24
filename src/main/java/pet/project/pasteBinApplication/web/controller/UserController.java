@@ -28,8 +28,10 @@ public class UserController {
 
     private final UserService userService;
     private final UsersFilesService filesService;
+
     private final UserMapper userMapper;
     private final UserFileMapper fileMapper;
+
 
 
     /*FIXME дописать как понадобятся методы
@@ -74,14 +76,14 @@ public class UserController {
         userService.deleteUserByNickName(nickName);
     }
 
-    @Operation(
-            summary = "Get all users files (dto) by user nick name"
-    )
-    @GetMapping("/{nickName}/files")
-    public List<UsersFileDto> getFilesByUserNickName(@PathVariable(name = "nickName") String nickName) {
-        List<UserFile> files = filesService.getAllByNickName(nickName);
-        return fileMapper.toListDto(files);
-    }
+//    @Operation(
+//            summary = "Get all users files (dto) by user nick name"
+//    )
+//    @GetMapping("/{nickName}/files")
+//    public List<UsersFileDto> getFilesByUserNickName(@PathVariable(name = "nickName") String nickName) {
+//        List<UserFile> files = filesService.getAllByNickName(nickName);
+//        return fileMapper.toDto(files);
+//    }
 
 
     @Operation(
@@ -90,11 +92,13 @@ public class UserController {
 //    @PreAuthorize("@CustomSecurityExpression.canAccessUserOnly(#nickName)") //1 //TODO уточнить, где будет находиться метод удаления файла, туда же скорее всего запихнуть и это
     @PreAuthorize("@CustomSecurityExpression.canAccessFileUSerOnly(#nickName)")
     @PostMapping("/{nickName}/files")
-    public UsersFileDto createFile(@PathVariable(name = "nickName") String nickName,
-                                   @Validated(OnCreateProcess.class) @RequestBody UsersFileDto dto) {
-        UserFile file = fileMapper.toEntity(dto);
-        UserEntity userEntity = userService.getByNickName(nickName);
-        UserFile createdFile = filesService.createFile(file, userEntity.getNickName());
-        return fileMapper.toDto(createdFile);
+//    @PostMapping("/{nickName}/generate_url") //TODO посмотреть как напрямую через генерацию ссылок обращаться в минио
+    public void uploadFile(@PathVariable(name = "nickName") String nickName,
+                                   @Validated(OnCreateProcess.class) @ModelAttribute UsersFileDto fileDto) {
+        UserFile file = fileMapper.toEntity(fileDto);
+        userService.uploadFile(nickName, file);
     }
+
+
+
 }

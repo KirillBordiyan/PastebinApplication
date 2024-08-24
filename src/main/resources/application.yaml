@@ -52,7 +52,7 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
+    url: jdbc:postgresql://${DB_HOST}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -64,6 +64,11 @@ spring:
       ddl-auto: create
     database: POSTGRESQL
 
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    access: 1 #${JWT_ACCESS} #часов
+    refresh: 30 #${JWT_REFRESH} #дней
 
   #чисто админовское
   #login: minioadmin <---> pass: minioadmin
@@ -72,18 +77,6 @@ minio:
   url: ${MINIO_URL} #либо сюда, либо в композе указывать может надо будет указать имя контейнера
   accessKey: ${MINIO_ACCESS_KEY}
   secretKey: ${MINIO_SECRET_KEY}
-
-
-security:
-  jwt:
-    secret: ${JWT_SECRET}
-    access: 1 #${JWT_ACCESS} #часов
-    refresh: 30 #${JWT_REFRESH} #дней
-
-
-
-
-
 
 
 

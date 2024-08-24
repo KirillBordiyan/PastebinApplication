@@ -5,9 +5,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import pet.project.pasteBinApplication.model.file.UserFile;
+//import pet.project.pasteBinApplication.model.file.UserFile;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,7 +44,11 @@ public class UserEntity implements Serializable {
     )
     Set<Role> roles;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    Set<UserFile> usersFiles;
+    //    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+//    Set<UserFile> usersFiles;
+    @Column(name = "file")
+    @CollectionTable(name = "users_files")
+    @ElementCollection
+    List<String> usersFiles;
 }
 // presigned urls - unauthorized file access
