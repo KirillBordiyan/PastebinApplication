@@ -8,15 +8,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
-import pet.project.pasteBinApplication.model.file.UserFile;
+import pet.project.pasteBinApplication.model.file.UserFileData;
 import pet.project.pasteBinApplication.model.user.Role;
 import pet.project.pasteBinApplication.model.user.UserEntity;
 import pet.project.pasteBinApplication.repositories.RoleRepository;
 import pet.project.pasteBinApplication.repositories.UserRepository;
 import pet.project.pasteBinApplication.service.UserService;
-import pet.project.pasteBinApplication.service.UsersFilesService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +27,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UsersFilesService filesService;
 
 
     @Override
@@ -103,8 +104,8 @@ public class UserServiceImpl implements UserService {
             userEntity.setRoles(roles);
         }
 
-        List<String> files = new ArrayList<>();
-        userEntity.setUsersFiles(files);
+        List<UserFileData> files = new ArrayList<>();
+        userEntity.setFiles(files);
 
         userRepository.save(userEntity);
 
@@ -124,16 +125,5 @@ public class UserServiceImpl implements UserService {
 //    @Cacheable(value = "UserService::isUserFileOwner", key = "#nickName" + '.' + "#fileId")
     public boolean isUserFileOwner(String nickName, String fileName) {
         return userRepository.isFileOwner(nickName, fileName);
-    }
-
-
-    @Override
-    @Transactional
-    @CacheEvict(value = "UserService::GetByNickName", key = "#nickName")//test
-    public void uploadFile(String nickName, UserFile file) {
-        UserEntity user = getByNickName(nickName);
-        String fileName = filesService.upload(file);
-        user.getUsersFiles().add(fileName);
-        userRepository.save(user);
     }
 }

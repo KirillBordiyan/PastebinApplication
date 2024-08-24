@@ -6,13 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pet.project.pasteBinApplication.model.file.UserFile;
+import pet.project.pasteBinApplication.model.file.UserFileData;
 import pet.project.pasteBinApplication.model.user.UserEntity;
+import pet.project.pasteBinApplication.service.FileService;
 import pet.project.pasteBinApplication.service.UserService;
-import pet.project.pasteBinApplication.service.UsersFilesService;
-import pet.project.pasteBinApplication.web.dto.file.UsersFileDto;
+import pet.project.pasteBinApplication.web.dto.file.UserFileDataDto;
 import pet.project.pasteBinApplication.web.dto.user.UserDto;
-import pet.project.pasteBinApplication.web.dto.validation.OnCreateProcess;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
 import pet.project.pasteBinApplication.web.mappers.UserFileMapper;
 import pet.project.pasteBinApplication.web.mappers.UserMapper;
@@ -27,23 +26,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UsersFilesService filesService;
+    private final FileService fileService;
 
     private final UserMapper userMapper;
     private final UserFileMapper fileMapper;
-
-
-
-    /*FIXME дописать как понадобятся методы
-        чел делал для таски на обновление так:
-
-        @PutMapping
-        public TaskDto update(@Validated(OnUpdateProcess.class) @RequestBody TaskDto dto){
-            Task task = taskMapper.toEntity(dto);
-            Task updated = taskService.update(task);
-            return taskMapper.toDto(updated);
-        }
-    */
 
 
     @Operation(
@@ -76,29 +62,12 @@ public class UserController {
         userService.deleteUserByNickName(nickName);
     }
 
-//    @Operation(
-//            summary = "Get all users files (dto) by user nick name"
-//    )
-//    @GetMapping("/{nickName}/files")
-//    public List<UsersFileDto> getFilesByUserNickName(@PathVariable(name = "nickName") String nickName) {
-//        List<UserFile> files = filesService.getAllByNickName(nickName);
-//        return fileMapper.toDto(files);
-//    }
-
-
     @Operation(
-            summary = "Create fileDto"
+            summary = "Get all users files (dto) by user nick name"
     )
-//    @PreAuthorize("@CustomSecurityExpression.canAccessUserOnly(#nickName)") //1 //TODO уточнить, где будет находиться метод удаления файла, туда же скорее всего запихнуть и это
-    @PreAuthorize("@CustomSecurityExpression.canAccessFileUSerOnly(#nickName)")
-    @PostMapping("/{nickName}/files")
-//    @PostMapping("/{nickName}/generate_url") //TODO посмотреть как напрямую через генерацию ссылок обращаться в минио
-    public void uploadFile(@PathVariable(name = "nickName") String nickName,
-                                   @Validated(OnCreateProcess.class) @ModelAttribute UsersFileDto fileDto) {
-        UserFile file = fileMapper.toEntity(fileDto);
-        userService.uploadFile(nickName, file);
+    @GetMapping("/{nickName}/files")
+    public List<UserFileDataDto> getFilesByUserNickName(@PathVariable(name = "nickName") String nickName) {
+        List<UserFileData> files = fileService.getAllUserFiles(nickName);
+        return fileMapper.toDto(files);
     }
-
-
-
 }

@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
                     from users_files file
                     join users on file.nick_name = users.nick_name
                     where
-                    file.file_name = :fileName and
+                    file.original_file_name = :fileName and
                     users.nick_name = :nickName
                     """
     )

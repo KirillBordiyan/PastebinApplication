@@ -1,14 +1,14 @@
 package pet.project.pasteBinApplication.web.mappers;
 
 import org.mapstruct.Mapper;
-import pet.project.pasteBinApplication.model.file.UserFile;
-import pet.project.pasteBinApplication.web.dto.file.UsersFileDto;
+import pet.project.pasteBinApplication.model.file.UserFileData;
+import pet.project.pasteBinApplication.web.dto.file.UserFileDataDto;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface UserFileMapper extends AbleMapping<UserFile, UsersFileDto>{
-//    UsersFileDto toDto(UserFile file);
-//    List<UsersFileDto> toListDto(List<UserFile> files);
-//    UserFile toEntity(UsersFileDto dto);
+public interface UserFileMapper extends AbleMapping<UserFileData, UserFileDataDto>{
+    UserFileDataDto toDto(UserFileData file);
+    List<UserFileDataDto> toDto(List<UserFileData> files);
+    UserFileData toEntity(UserFileDataDto dto);
 }

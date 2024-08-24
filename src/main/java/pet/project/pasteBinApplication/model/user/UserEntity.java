@@ -2,10 +2,9 @@ package pet.project.pasteBinApplication.model.user;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-//import pet.project.pasteBinApplication.model.file.UserFile;
+import pet.project.pasteBinApplication.model.file.UserFileData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,14 +12,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "pastebin_schema")
-@Data
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-//@RedisHash(value = "UserERedis")
 public class UserEntity implements Serializable {
 
     @Id
     @Column(name = "nick_name", unique = true, nullable = false) //БЕЗ ПРОБЕЛОВ И СИМВОЛОВ?? =  никнейм
-    String nickName; //брать как уникальное имя пользователя
+    String nickName;
 
 
     @Column(name = "email", unique = true, nullable = false)
@@ -38,17 +37,12 @@ public class UserEntity implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_nick_name", nullable = false),
+            joinColumns = @JoinColumn(name = "nick_name", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false),
             schema = "pastebin_schema"
     )
     Set<Role> roles;
 
-    //    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-//    Set<UserFile> usersFiles;
-    @Column(name = "file")
-    @CollectionTable(name = "users_files")
-    @ElementCollection
-    List<String> usersFiles;
+    @OneToMany(mappedBy = "ownerNickName", cascade = CascadeType.ALL)
+    List<UserFileData> files;
 }
-// presigned urls - unauthorized file access
