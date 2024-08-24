@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
-import pet.project.pasteBinApplication.exceptions.AccessDeniedException;
-import pet.project.pasteBinApplication.exceptions.FileUploadException;
-import pet.project.pasteBinApplication.exceptions.ResourceMappingException;
-import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
+import pet.project.pasteBinApplication.exceptions.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -86,9 +83,23 @@ public class GlobalExceptionHandler {
         return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "Authentication was failed!");
     }
 
-    @ExceptionHandler(FileUploadException.class)
+    //FIXME для фронта мб пусть пока будут
+//    @ExceptionHandler(FileUploadException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ExceptionResponse handleUploadException(FileUploadException e){
+//        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+//    }
+
+//    @ExceptionHandler(FileDownloadException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ExceptionResponse handleDownloadException(FileDownloadException e){
+//        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+//    }
+
+
+    @ExceptionHandler(PresignedObjectUrlCreatingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse handleUploadException(FileUploadException e){
+    public ExceptionResponse handlePresignedUrlGenerationException(PresignedObjectUrlCreatingException e){
         return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 

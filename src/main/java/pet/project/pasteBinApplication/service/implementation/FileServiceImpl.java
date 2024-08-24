@@ -1,10 +1,16 @@
 package pet.project.pasteBinApplication.service.implementation;
 
+import com.jlefebure.spring.boot.minio.MinioException;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MinioClient;
+import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pet.project.pasteBinApplication.exceptions.PresignedObjectUrlCreatingException;
 import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
 import pet.project.pasteBinApplication.model.file.UserFileData;
+import pet.project.pasteBinApplication.prop.MinioProperties;
 import pet.project.pasteBinApplication.repositories.FileDataRepository;
 import pet.project.pasteBinApplication.service.FileService;
 import pet.project.pasteBinApplication.service.UserService;
@@ -17,6 +23,8 @@ public class FileServiceImpl implements FileService {
 
     private final FileDataRepository fileDataRepository;
     private final UserService userService;
+    private final MinioClient minioClient;
+    private final MinioProperties properties;
 
 
     @Override
@@ -26,14 +34,15 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public String generateResultFileLink(UserFileData fileData) {
-
+    public String generateResultFileName(UserFileData fileData) {
+        //приходит some_name вместо some_name.txt
+        //тогда будет user_some_name_1
         String search = fileData.getOwnerNickName() + "_" + fileData.getOriginalFileName();
         String resultFileLink = null;
 
         if (fileDataRepository.findByLinkedFileName(search).isPresent()) {
             int i = 1;
-            //меняем линку
+            //меняем имя файла
             while (true) {
                 if (fileDataRepository.findByLinkedFileName(search + "_" + i++).isEmpty()) {
                     break;
@@ -43,20 +52,29 @@ public class FileServiceImpl implements FileService {
         }
 
         fileData.setLinkedFileName(resultFileLink);
-
         fileDataRepository.save(fileData);
+
         return resultFileLink;
     }
 
-    //приходит some_name вместо some_name.txt
-    //тогда будет user_some_name_1
     @Override
     @Transactional(readOnly = true)
     public String getResultFileLink(String bucketFileName) {
-        UserFileData userFileData = fileDataRepository.findByLinkedFileName(bucketFileName)
-                .orElseThrow(() -> new ResourceNotFoundException("File not found (by name)"));
-        return userFileData.getLinkedFileName();
+
+        try {
+            return minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket(properties.getBucket())
+                            .object(bucketFileName)
+                            .expiry(24 * 60 * 60)
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new PresignedObjectUrlCreatingException("Result file link creating was failed: " + e.getMessage());
+        }
     }
+
 
 //    private final MinioClient minio;
 //    private final MinioProperties minioProperties;
