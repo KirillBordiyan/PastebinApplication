@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pet.project.pasteBinApplication.exceptions.PresignedObjectUrlCreatingException;
 import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
 import pet.project.pasteBinApplication.model.file.UserFileData;
+import pet.project.pasteBinApplication.model.user.UserEntity;
 import pet.project.pasteBinApplication.prop.MinioProperties;
 import pet.project.pasteBinApplication.repositories.FileDataRepository;
 import pet.project.pasteBinApplication.service.FileService;
@@ -52,7 +53,11 @@ public class FileServiceImpl implements FileService {
         }
 
         fileData.setLinkedFileName(resultFileLink);
-        fileDataRepository.save(fileData);
+        UserFileData savingFileData = fileDataRepository.save(fileData);
+
+        UserEntity user = userService.getByNickName(fileData.getOwnerNickName().getNickName());
+        user.getFiles().add(savingFileData);
+        userService.updateUser(user);
 
         return resultFileLink;
     }

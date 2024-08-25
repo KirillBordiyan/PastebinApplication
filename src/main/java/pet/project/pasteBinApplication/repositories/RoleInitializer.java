@@ -1,5 +1,6 @@
 package pet.project.pasteBinApplication.repositories;
 
+import jakarta.annotation.Priority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import pet.project.pasteBinApplication.model.user.Role;
 
 @RequiredArgsConstructor
 @Component
+@Priority(value = 1)
 public class RoleInitializer implements CommandLineRunner {
 
     private final RoleRepository roleRepository;

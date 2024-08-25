@@ -31,13 +31,6 @@ public class AuthController {
     @Operation(
             summary = "Login",
             description = "Just login"
-//            ,responses = { //в yaml отключен override ответов
-//                    @ApiResponse(
-//                            responseCode = "200",
-//                            description = "Успешный ответ",
-//                            content = @Content(schema = @Schema(implementation = JwtResponse.class))
-//                    )
-//            }
     )
     @PostMapping("/login")
     public JwtResponse login(@Validated @RequestBody JwtRequest loginRequest){

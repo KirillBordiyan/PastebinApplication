@@ -1,5 +1,6 @@
 package pet.project.pasteBinApplication.repositories;
 
+import jakarta.annotation.Priority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
+@Priority(value = 2)
 public class AdminInitializer implements CommandLineRunner {
 
     private final UserService userService;

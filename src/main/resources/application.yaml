@@ -46,13 +46,15 @@ spring:
     type: redis
   data:
     redis:
-      host: ${REDIS_HOST} #ЗДЕСЬ ДОЛЖЕН БЫТЬ CONTAINER_NAME С REDIS, ТК ХОСТ НЕ ЛОКАЛЬНО
+#      host: ${REDIS_HOST} #ЗДЕСЬ ДОЛЖЕН БЫТЬ CONTAINER_NAME С REDIS, ТК ХОСТ НЕ ЛОКАЛЬНО
+      host: localhost #ЗДЕСЬ ДОЛЖЕН БЫТЬ CONTAINER_NAME С REDIS, ТК ХОСТ НЕ ЛОКАЛЬНО
       port: 6379
       password: ${REDIS_PASSWORD}
 
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
+#    url: jdbc:postgresql://${DB_HOST}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
+    url: jdbc:postgresql://localhost:5432/pastebin?currentSchema=pastebin_schema
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver

@@ -40,7 +40,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/api/auth/**").permitAll();
                     request.requestMatchers("/swagger/**").permitAll();
+
+                    request.requestMatchers("/auth/**").permitAll();
+                    request.requestMatchers("/users/**").authenticated();
+
                     request.anyRequest().authenticated();
+
                 })
                 .exceptionHandling(handling -> {
                     handling.authenticationEntryPoint((request, response, authException) -> {

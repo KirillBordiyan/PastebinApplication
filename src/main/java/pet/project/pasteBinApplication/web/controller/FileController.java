@@ -22,7 +22,7 @@ public class FileController {
             description = "With UserDto (request/response)"
     )
     @PostMapping
-    public String generateFileLink(@ModelAttribute UserFileDataDto fileDataDto) {//FIXME может и @RequestBody
+    public String generateFileLink(@RequestBody UserFileDataDto fileDataDto) {//FIXME может и @RequestBody
         return fileService.generateResultFileName(fileMapper.toEntity(fileDataDto));
         //String тк на фронте название файла будет заменено на вот это новое
     }
