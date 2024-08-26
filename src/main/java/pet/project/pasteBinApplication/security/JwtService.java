@@ -97,15 +97,13 @@ public class JwtService {
                 .getPayload();
     }
 
-    private String getUserNickName(String jwt){
+    public String getUserNickName(String jwt){
         Claims claims = getClaims(jwt);
         return String.valueOf((String) claims.get("nickName"));
     }
 
     public boolean isTokenValid(String jwt){
         Claims claims = getClaims(jwt);
-        System.out.println(claims.getExpiration());
-        System.out.println(claims.getIssuedAt());
         return claims.getExpiration().after(Date.from(Instant.now()));
     }
 

@@ -78,9 +78,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ExceptionResponse handleAuthenticationException(AuthenticationException e){
-        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "Authentication was failed!");
+        return new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "Authentication failed!");
     }
 
     //FIXME для фронта мб пусть пока будут

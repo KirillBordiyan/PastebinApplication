@@ -38,7 +38,8 @@ public class ApplicationConfiguration {
     @Bean
     public MinioClient minioClient() {
         return MinioClient.builder()
-                .endpoint(minioProperties.getUrl())
+//                .endpoint(minioProperties.getUrl())
+                .endpoint("http://localhost:9000")
                 .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
                 .build();
     }

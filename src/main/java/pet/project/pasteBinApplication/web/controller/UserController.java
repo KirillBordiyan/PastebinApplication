@@ -1,5 +1,6 @@
 package pet.project.pasteBinApplication.web.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pet.project.pasteBinApplication.model.file.UserFileData;
 import pet.project.pasteBinApplication.model.user.UserEntity;
+import pet.project.pasteBinApplication.security.JwtService;
 import pet.project.pasteBinApplication.service.FileService;
 import pet.project.pasteBinApplication.service.UserService;
 import pet.project.pasteBinApplication.web.dto.file.UserFileDataDto;
 import pet.project.pasteBinApplication.web.dto.user.UserDto;
+import pet.project.pasteBinApplication.web.dto.validation.OnGetProcess;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
 import pet.project.pasteBinApplication.web.mappers.UserFileMapper;
 import pet.project.pasteBinApplication.web.mappers.UserMapper;
@@ -31,6 +34,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final UserFileMapper fileMapper;
 
+    private final JwtService jwt;
 
     @Operation(
             summary = "Update user",
@@ -70,4 +74,18 @@ public class UserController {
         List<UserFileData> files = fileService.getAllUserFiles(nickName);
         return fileMapper.toDto(files);
     }
+
+    @Operation(
+            summary = "Get userDto by nick name"
+    )
+    @GetMapping("/who-i-am")
+    public UserDto whoIAm(@RequestHeader(name = "Authorization") String access) {
+        String token = access.substring(7);
+        String name = jwt.getUserNickName(token);
+
+        UserEntity userEntity = userService.getByNickName(name);
+        return userMapper.toDto(userEntity);
+
+    }
+
 }

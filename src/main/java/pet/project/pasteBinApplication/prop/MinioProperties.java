@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "minio")
 public class MinioProperties {
 
-    private String bucket;
-    private String url;
+    private String bucket = "bucket1";
+    private String url = "http://localhost:9000";
     private String accessKey;
     private String secretKey;
 

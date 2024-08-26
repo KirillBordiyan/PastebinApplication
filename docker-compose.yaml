@@ -7,18 +7,18 @@ volumes:
     driver: local
 
 services:
-  app:
-    build:
-      context: .
-    container_name: pastebin-application
-    depends_on:
-      - db
-      - redis
-      - minio
-    env_file:
-      - .env
-    ports:
-      - '8080:8080'
+#  app:
+#    build:
+#      context: .
+#    container_name: pastebin-application
+#    depends_on:
+#      - db
+#      - redis
+#      - minio
+#    env_file:
+#      - .env
+#    ports:
+#      - '8080:8080'
 
   db:
     image: postgres:13-alpine

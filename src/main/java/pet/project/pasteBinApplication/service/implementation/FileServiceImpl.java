@@ -1,6 +1,5 @@
 package pet.project.pasteBinApplication.service.implementation;
 
-import com.jlefebure.spring.boot.minio.MinioException;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.http.Method;
@@ -8,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.pasteBinApplication.exceptions.PresignedObjectUrlCreatingException;
-import pet.project.pasteBinApplication.exceptions.ResourceNotFoundException;
 import pet.project.pasteBinApplication.model.file.UserFileData;
 import pet.project.pasteBinApplication.model.user.UserEntity;
-import pet.project.pasteBinApplication.prop.MinioProperties;
 import pet.project.pasteBinApplication.repositories.FileDataRepository;
 import pet.project.pasteBinApplication.service.FileService;
 import pet.project.pasteBinApplication.service.UserService;
+import pet.project.pasteBinApplication.web.dto.fileResponse.FileGetResponse;
+import pet.project.pasteBinApplication.web.dto.fileResponse.FilePutResponse;
 
 import java.util.List;
 
@@ -25,58 +24,93 @@ public class FileServiceImpl implements FileService {
     private final FileDataRepository fileDataRepository;
     private final UserService userService;
     private final MinioClient minioClient;
-    private final MinioProperties properties;
+//    private final MinioProperties properties;
 
 
     @Override
     public List<UserFileData> getAllUserFiles(String nickName) {
-        return List.copyOf(userService.getByNickName(nickName).getFiles());
+        return List.copyOf((userService.getByNickName(nickName).getFiles()));
     }
 
     @Override
     @Transactional
     public String generateResultFileName(UserFileData fileData) {
+        //put
         //приходит some_name вместо some_name.txt
         //тогда будет user_some_name_1
-        String search = fileData.getOwnerNickName() + "_" + fileData.getOriginalFileName();
-        String resultFileLink = null;
+        String search = fileData.getOwnerNickName().getNickName() + "_" + fileData.getOriginalFileName();
+        String resultFileName = search;
 
-        if (fileDataRepository.findByLinkedFileName(search).isPresent()) {
+        if (fileDataRepository.findByBucketFileName(search).isPresent()) {
             int i = 1;
             //меняем имя файла
             while (true) {
-                if (fileDataRepository.findByLinkedFileName(search + "_" + i++).isEmpty()) {
+                if (fileDataRepository.findByBucketFileName(search + "_" + i++).isEmpty()) {
                     break;
                 }
             }
-            resultFileLink = search + "_" + i;
+            fileData.setOriginalFileName(fileData.getOriginalFileName() + "_" + i);
+            resultFileName = search + "_" + i;
         }
 
-        fileData.setLinkedFileName(resultFileLink);
+        fileData.setBucketFileName(resultFileName);
         UserFileData savingFileData = fileDataRepository.save(fileData);
 
         UserEntity user = userService.getByNickName(fileData.getOwnerNickName().getNickName());
         user.getFiles().add(savingFileData);
         userService.updateUser(user);
 
-        return resultFileLink;
+        return resultFileName;
+    }
+
+    @Override
+    public FilePutResponse getPressignedPutUrl(String bucketFileName) {
+        try {
+            FilePutResponse response = new FilePutResponse();
+
+//            Map<String, String> reqParams = new HashMap<String, String>();
+//            reqParams.put("response-content-type", "application/json");
+
+            String presignedPutUrl = minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.PUT)
+                            .bucket("bucket1")
+                            .object(bucketFileName)
+                            .expiry(60 * 60 * 24)
+//                            .extraQueryParams(reqParams)
+                            .build());
+
+            response.setUniqueFileName(bucketFileName);
+            response.setPresignedPutUrl(presignedPutUrl);
+
+            return response;
+
+        } catch (Exception e) {
+            throw new PresignedObjectUrlCreatingException("Pre-signed PUT link creating was failed: " + e.getMessage());
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public String getResultFileLink(String bucketFileName) {
-
+    public FileGetResponse getPressignedGetUrl(String bucketFileName) {
         try {
-            return minioClient.getPresignedObjectUrl(
+            FileGetResponse response = new FileGetResponse();
+            String presignedGetUrl = minioClient.getPresignedObjectUrl(
                     GetPresignedObjectUrlArgs.builder()
                             .method(Method.GET)
-                            .bucket(properties.getBucket())
+                            .bucket("bucket1")
                             .object(bucketFileName)
                             .expiry(24 * 60 * 60)
                             .build()
             );
+
+            response.setUniqueFileName(bucketFileName);
+            response.setPresignedGetUrl(presignedGetUrl);
+
+            return response;
+
         } catch (Exception e) {
-            throw new PresignedObjectUrlCreatingException("Result file link creating was failed: " + e.getMessage());
+            throw new PresignedObjectUrlCreatingException("Pre-signed GET link creating was failed: " + e.getMessage());
         }
     }
 

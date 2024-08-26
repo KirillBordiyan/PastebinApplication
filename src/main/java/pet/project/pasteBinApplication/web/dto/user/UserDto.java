@@ -1,9 +1,7 @@
 package pet.project.pasteBinApplication.web.dto.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,10 +9,8 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.Length;
 import pet.project.pasteBinApplication.web.dto.validation.OnCreateProcess;
+import pet.project.pasteBinApplication.web.dto.validation.OnGetProcess;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
-
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -22,12 +18,8 @@ import java.util.concurrent.ThreadLocalRandom;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
 
-//    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "User ID", exampleClasses = UUID.class/*"cdc228b8-4d57-4ed2-895f-f0bc1562c03b"*/)
-//    @NotNull(message = "DTO user: ID cannot be null!", groups = OnUpdateProcess.class)
-//    UUID userId;
-
     @Schema(description = "User nick name", example = "Ivan_Ivanov86")
-    @NotNull(message = "DTO user: NICKNAME cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
+    @NotNull(message = "DTO user: NICKNAME cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class, OnGetProcess.class})
     @Length(max = 255, message = "DTO user: USERNAME must be smaller than 255 symb", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     String nickName;
 

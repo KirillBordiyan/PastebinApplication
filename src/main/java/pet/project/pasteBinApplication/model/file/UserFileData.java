@@ -1,7 +1,7 @@
 package pet.project.pasteBinApplication.model.file;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import pet.project.pasteBinApplication.model.user.UserEntity;
@@ -21,13 +21,14 @@ public class UserFileData {
     Long rowId;
 
     @Column(name = "linked_file_name", unique = true)
-    String linkedFileName;
+    String bucketFileName;
 
     @Column(name = "original_file_name", nullable = false)
     String originalFileName;
 
     @ManyToOne
     @JoinColumn(name = "nick_name", nullable = false)
+    @JsonIgnoreProperties(value = {"email", "password", "passwordConfirm", "roles", "files"})
     UserEntity ownerNickName;
 }
 

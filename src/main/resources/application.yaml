@@ -56,7 +56,9 @@ spring:
 #    url: jdbc:postgresql://${DB_HOST}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
     url: jdbc:postgresql://localhost:5432/pastebin?currentSchema=pastebin_schema
     username: ${POSTGRES_USERNAME}
+#    username: root
     password: ${POSTGRES_PASSWORD}
+#    password: 1234
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -75,10 +77,14 @@ security:
   #чисто админовское
   #login: minioadmin <---> pass: minioadmin
 minio:
-  bucket: ${MINIO_BUCKET}
-  url: ${MINIO_URL} #либо сюда, либо в композе указывать может надо будет указать имя контейнера
-  accessKey: ${MINIO_ACCESS_KEY}
-  secretKey: ${MINIO_SECRET_KEY}
+#  bucket: ${MINIO_BUCKET}
+  bucket: bucket1
+#  url: ${MINIO_URL} #либо сюда, либо в композе указывать может надо будет указать имя контейнера
+#  url: "http://localhost:9000"
+#  accessKey: ${MINIO_ACCESS_KEY}
+  accessKey: minioadmin
+#  secretKey: ${MINIO_SECRET_KEY}
+  secretKey: minioadmin
 
 
 

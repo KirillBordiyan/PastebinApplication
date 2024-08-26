@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface FileDataRepository extends JpaRepository<UserFileData, Long> {
 
-    Optional<UserFileData> findByLinkedFileName(String linkedFileName);
+    Optional<UserFileData> findByBucketFileName(String bucketFileName);
 
 //    есть у пользователя
 //    List<UserFileData> findAllUserFiles(String nickName);
