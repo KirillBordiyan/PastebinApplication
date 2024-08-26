@@ -43,6 +43,6 @@ public class UserEntity implements Serializable {
     )
     Set<Role> roles;
 
-    @OneToMany(mappedBy = "ownerNickName", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fileOwner", cascade = CascadeType.ALL)
     List<UserFileData> files;
 }

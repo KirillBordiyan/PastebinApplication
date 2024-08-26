@@ -6,6 +6,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import pet.project.pasteBinApplication.model.user.UserEntity;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "users_files", schema = "pastebin_schema")
 @Getter
@@ -13,7 +15,7 @@ import pet.project.pasteBinApplication.model.user.UserEntity;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserFileData {
+public class UserFileData implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,7 +31,7 @@ public class UserFileData {
     @ManyToOne
     @JoinColumn(name = "nick_name", nullable = false)
     @JsonIgnoreProperties(value = {"email", "password", "passwordConfirm", "roles", "files"})
-    UserEntity ownerNickName;
+    UserEntity fileOwner;
 }
 
 //    @Column(name = "access level", nullable = false)

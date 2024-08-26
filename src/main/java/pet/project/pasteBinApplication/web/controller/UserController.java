@@ -1,6 +1,5 @@
 package pet.project.pasteBinApplication.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import pet.project.pasteBinApplication.service.FileService;
 import pet.project.pasteBinApplication.service.UserService;
 import pet.project.pasteBinApplication.web.dto.file.UserFileDataDto;
 import pet.project.pasteBinApplication.web.dto.user.UserDto;
-import pet.project.pasteBinApplication.web.dto.validation.OnGetProcess;
 import pet.project.pasteBinApplication.web.dto.validation.OnUpdateProcess;
 import pet.project.pasteBinApplication.web.mappers.UserFileMapper;
 import pet.project.pasteBinApplication.web.mappers.UserMapper;

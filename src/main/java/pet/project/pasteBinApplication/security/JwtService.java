@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pet.project.pasteBinApplication.exceptions.AccessDeniedException;
 import pet.project.pasteBinApplication.model.user.Role;
 import pet.project.pasteBinApplication.model.user.UserEntity;
@@ -68,10 +69,9 @@ public class JwtService {
                 .signWith(generateKey())
                 .compact();
     }
-
     public JwtResponse refreshUserTokens(String refreshToken){
         JwtResponse response = new JwtResponse();
-        if(isTokenValid(refreshToken)){
+        if(!isTokenValid(refreshToken)){
             throw new AccessDeniedException();
         }
         String nickName = getUserNickName(refreshToken);

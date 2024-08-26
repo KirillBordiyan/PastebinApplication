@@ -70,13 +70,14 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+<!--            <version>${lombok.version}</version>-->
         </dependency>
 
         <!--        для yaml зависимостей, норм сваггер описать-->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
+            <version>2.2</version>
         </dependency>
 
         <dependency>

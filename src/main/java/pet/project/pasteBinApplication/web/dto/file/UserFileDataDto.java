@@ -24,11 +24,12 @@ public class UserFileDataDto {
     @Schema(description = "Unique file name")
     @NotNull(message = "UFD DTO: unique file name cannot be null", groups = {OnGetProcess.class})
     @Length(max = 510, message = "unique file name must be smaller than 510 symb", groups = {OnGetProcess.class})
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String bucketFileName;
 
     @Schema(description = "ownerNickName of file")
     @NotNull(message = "UFD DTO: ownerNickName (nick name) must not be null",groups = {OnGetProcess.class, OnCreateProcess.class})
     @Length(max = 255, message = "owner nickname must not be smaller than 255 symb", groups = {OnGetProcess.class, OnCreateProcess.class})
     @JsonIgnoreProperties(value = "email")
-    String ownerNickName;
+    UserDto ownerNickName;
 }

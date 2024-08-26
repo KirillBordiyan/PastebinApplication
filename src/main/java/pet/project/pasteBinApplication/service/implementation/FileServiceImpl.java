@@ -38,7 +38,7 @@ public class FileServiceImpl implements FileService {
         //put
         //приходит some_name вместо some_name.txt
         //тогда будет user_some_name_1
-        String search = fileData.getOwnerNickName().getNickName() + "_" + fileData.getOriginalFileName();
+        String search = fileData.getFileOwner().getNickName() + "_" + fileData.getOriginalFileName();
         String resultFileName = search;
 
         if (fileDataRepository.findByBucketFileName(search).isPresent()) {
@@ -56,7 +56,7 @@ public class FileServiceImpl implements FileService {
         fileData.setBucketFileName(resultFileName);
         UserFileData savingFileData = fileDataRepository.save(fileData);
 
-        UserEntity user = userService.getByNickName(fileData.getOwnerNickName().getNickName());
+        UserEntity user = userService.getByNickName(fileData.getFileOwner().getNickName());
         user.getFiles().add(savingFileData);
         userService.updateUser(user);
 

@@ -71,7 +71,7 @@ public class ApplicationConfiguration {
                 .fromSerializer(new GenericJackson2JsonRedisSerializer());
         RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeValuesWith(pair)
-                .entryTtl(Duration.ofHours(6));
+                .entryTtl(Duration.ofHours(1));
 
         return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
                 .cacheDefaults(conf).build();

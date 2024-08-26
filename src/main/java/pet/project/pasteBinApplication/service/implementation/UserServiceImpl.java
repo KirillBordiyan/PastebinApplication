@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-//    @Cacheable(value = "UserService::getByEmail", key = "#email")
     public UserEntity getByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found (by login/email)"));
@@ -122,7 +121,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-//    @Cacheable(value = "UserService::isUserFileOwner", key = "#nickName" + '.' + "#fileId")
     public boolean isUserFileOwner(String nickName, String fileName) {
         return userRepository.isFileOwner(nickName, fileName);
     }

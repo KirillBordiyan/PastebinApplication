@@ -4,10 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pet.project.pasteBinApplication.model.user.UserEntity;
 import pet.project.pasteBinApplication.service.AuthService;
 import pet.project.pasteBinApplication.service.UserService;
@@ -53,7 +50,7 @@ public class AuthController {
             description = "Refresh all tokens by actual refresh token"
     )
     @PostMapping("/refresh")
-    public JwtResponse refresh(@RequestBody String refreshToken){
+    public JwtResponse refresh(@RequestHeader(name = "X-Refresh") String refreshToken){
         return authService.refresh(refreshToken);
     }
 }
