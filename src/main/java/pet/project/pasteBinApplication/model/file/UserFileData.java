@@ -22,16 +22,19 @@ public class UserFileData implements Serializable {
     @Column(name = "row_id")
     Long rowId;
 
-    @Column(name = "linked_file_name", unique = true)
-    String bucketFileName;
-
     @Column(name = "original_file_name", nullable = false)
     String originalFileName;
 
-    @ManyToOne
-    @JoinColumn(name = "nick_name", nullable = false)
-    @JsonIgnoreProperties(value = {"email", "password", "passwordConfirm", "roles", "files"})
-    UserEntity fileOwner;
+    @Column(name = "bucket_file_name", unique = true)
+    String bucketFileName;
+
+    @Column(name = "owner_nick_name", nullable = false)
+    String ownerNickName;
+
+//    @ManyToOne
+//    @JoinColumn(name = "nick_name", nullable = false)
+//    @JsonIgnoreProperties(value = {"email", "password", "passwordConfirm", "roles", "files"})
+//    UserEntity fileOwner;
 }
 
 //    @Column(name = "access level", nullable = false)

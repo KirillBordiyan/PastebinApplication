@@ -6,11 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pet.project.pasteBinApplication.service.FileService;
-import pet.project.pasteBinApplication.web.dto.file.UserFileDataDto;
+import pet.project.pasteBinApplication.web.dto.fileRequest.FileGetRequest;
+import pet.project.pasteBinApplication.web.dto.fileRequest.FilePutRequest;
 import pet.project.pasteBinApplication.web.dto.fileResponse.FileGetResponse;
 import pet.project.pasteBinApplication.web.dto.fileResponse.FilePutResponse;
-import pet.project.pasteBinApplication.web.dto.validation.OnGetProcess;
-import pet.project.pasteBinApplication.web.mappers.UserFileMapper;
 
 @RestController
 @RequestMapping("/api/files")
@@ -20,30 +19,22 @@ import pet.project.pasteBinApplication.web.mappers.UserFileMapper;
 public class FileController {
 
     private final FileService fileService;
-    private final UserFileMapper fileMapper;
 
     @Operation(
             summary = "Generate unique file name",
             description = "With UserDto (request/response)"
     )
     @PostMapping
-    public FilePutResponse generatePresignedPutUrl(@Validated(OnGetProcess.class) @RequestBody UserFileDataDto fileDataDto) {
-        //метод put ссылку - для загрузки
-        //метод get ссылку - для скачивания
-
-        String unique = fileService.generateResultFileName(fileMapper.toEntity(fileDataDto));
-        return fileService.getPressignedPutUrl(unique);
+    public FilePutResponse generatePresignedPutUrl(@RequestBody FilePutRequest filePutRequest) {
+        return fileService.getPressignedPutUrl(filePutRequest);
     }
 
     @Operation(
             summary = "Generate unique file name",
             description = "With UserDto (request/response)"
-    )
-    @GetMapping
-//    public FileGetResponse generatePresignedGetUrl(@PathVariable(name = "bucketFileName") String bucketFileName){
-    public FileGetResponse generatePresignedGetUrl(@RequestBody String bucketFileName){
-        return fileService.getPressignedGetUrl(bucketFileName);
+    )//нельзя POST, тк конфликт методов
+    @GetMapping //post = body, get = param
+    public FileGetResponse generatePresignedGetUrl(@RequestBody FileGetRequest fileGetRequest) {
+        return fileService.getPressignedGetUrl(fileGetRequest);
     }
-
 }
-

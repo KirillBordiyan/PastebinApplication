@@ -10,5 +10,6 @@ public class FilePutResponse {
 
     String uniqueFileName;
     String presignedPutUrl;
+    Boolean replaced = false;
 
 }

@@ -31,9 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "UserService::GetByNickName", key = "#nickName")
+//    @Cacheable(value = "UserService::GetByNickName", key = "#nickName")
     public UserEntity getByNickName(String nickName) {
-        return userRepository.findByNickName(nickName)
+        return userRepository.findUserName(nickName)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found (by name)"));
     }
 
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CachePut(value = "UserService::GetByNickName", key = "#userEntity.nickName")
+//    @CachePut(value = "UserService::GetByNickName", key = "#userEntity.nickName")
     public UserEntity updateUser(UserEntity userEntity) {
 
         if (Objects.isNull(userEntity.getNickName())) {
@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userEntity.getPassword())) {
             throw new IllegalStateException("UPDATE: Password must not be null!");
         }
-        if (Objects.isNull(userEntity.getPasswordConfirm())) {
-            throw new IllegalStateException("UPDATE: Password confirm must not be null!");
-        }
+//        if (Objects.isNull(userEntity.getPasswordConfirm())) {
+//            throw new IllegalStateException("UPDATE: Password confirm must not be null!");
+//        }
         if (Objects.isNull(userEntity.getRoles())) {
             throw new IllegalStateException("UPDATE: Roles must not be null!");
         }
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @Cacheable(value = "UserService::GetByNickName", key = "#userEntity.nickName")
+//    @Cacheable(value = "UserService::GetByNickName", key = "#userEntity.nickName")
     public UserEntity createUser(UserEntity userEntity) {
         if (Objects.isNull(userEntity.getNickName())) {
             throw new IllegalStateException("CREATE: User nick name must not be null!");
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userEntity.getPasswordConfirm())) {
             throw new IllegalStateException("CREATE: Password confirm must not be null!");
         }
-        if (userRepository.findByNickName(userEntity.getNickName()).isPresent()) {
+        if (userRepository.findUserName(userEntity.getNickName()).isPresent()) {
             throw new IllegalStateException("CREATE: User already exists!");
         }
         if (!userEntity.getPassword().equals(userEntity.getPasswordConfirm())) {
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "UserService::GetByNickName", key = "#nickName")//test
+//    @CacheEvict(value = "UserService::GetByNickName", key = "#nickName")//test
     public void deleteUserByNickName(String nickName) {
         userRepository.deleteByNickName(nickName);
     }

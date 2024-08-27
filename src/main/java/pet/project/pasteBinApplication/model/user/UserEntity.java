@@ -1,6 +1,8 @@
 package pet.project.pasteBinApplication.model.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -43,6 +45,7 @@ public class UserEntity implements Serializable {
     )
     Set<Role> roles;
 
-    @OneToMany(mappedBy = "fileOwner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ownerNickName", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = {"fileOwner"})
     List<UserFileData> files;
 }
