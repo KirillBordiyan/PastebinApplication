@@ -1,10 +1,8 @@
 package pet.project.pasteBinApplication.model.file;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import pet.project.pasteBinApplication.model.user.UserEntity;
 
 import java.io.Serializable;
 
@@ -30,14 +28,4 @@ public class UserFileData implements Serializable {
 
     @Column(name = "owner_nick_name", nullable = false)
     String ownerNickName;
-
-//    @ManyToOne
-//    @JoinColumn(name = "nick_name", nullable = false)
-//    @JsonIgnoreProperties(value = {"email", "password", "passwordConfirm", "roles", "files"})
-//    UserEntity fileOwner;
 }
-
-//    @Column(name = "access level", nullable = false)
-//    String level; // close, readOnly, accessAll
-//составной ключ для этой таблицы(файлнейм и бакетнейм)
-

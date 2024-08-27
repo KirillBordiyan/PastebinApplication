@@ -19,6 +19,7 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "role_id", nullable = false)
     Long roleId;
+
     @Column(name = "role_name", nullable = false)
     String roleName;
 
@@ -26,8 +27,4 @@ public class Role implements Serializable {
     public String toString() {
         return roleName;
     }
-
-//    public static Role of(String roleName){
-//        return new Role(, roleName);
-//    }
 }

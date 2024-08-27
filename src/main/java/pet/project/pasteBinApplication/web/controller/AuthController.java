@@ -30,7 +30,7 @@ public class AuthController {
             description = "Just login"
     )
     @PostMapping("/login")
-    public JwtResponse login(@Validated @RequestBody JwtRequest loginRequest){
+    public JwtResponse login(@Validated @RequestBody JwtRequest loginRequest) {
         return authService.login(loginRequest);
     }
 
@@ -39,7 +39,7 @@ public class AuthController {
             description = "Register new user in application"
     )
     @PostMapping("/register")
-    public UserDto register(@Validated(OnCreateProcess.class) @RequestBody UserDto userDto){
+    public UserDto register(@Validated(OnCreateProcess.class) @RequestBody UserDto userDto) {
         UserEntity user = userMapper.toEntity(userDto);
         UserEntity created = userService.createUser(user);
         return userMapper.toDto(created);
@@ -50,7 +50,7 @@ public class AuthController {
             description = "Refresh all tokens by actual refresh token"
     )
     @PostMapping("/refresh")
-    public JwtResponse refresh(@RequestHeader(name = "X-Refresh") String refreshToken){
+    public JwtResponse refresh(@RequestHeader(name = "X-Refresh") String refreshToken) {
         return authService.refresh(refreshToken);
     }
 }

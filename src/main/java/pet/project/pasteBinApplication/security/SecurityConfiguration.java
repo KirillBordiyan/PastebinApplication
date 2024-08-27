@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import pet.project.pasteBinApplication.prop.FrontendProperties;
 
 @Configuration
 @EnableWebSecurity
@@ -32,16 +30,15 @@ public class SecurityConfiguration {
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtFilter;
-    private final FrontendProperties frontendProperties;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(management ->
-                    management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/api/auth/**").permitAll();
@@ -66,20 +63,18 @@ public class SecurityConfiguration {
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigure(){
+    public WebMvcConfigurer corsConfigure() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*"); /*+ frontendProperties.getHost() + ":" + frontendProperties.getPort())*/;
+                        .allowedOrigins("*");
             }
         };
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager() {

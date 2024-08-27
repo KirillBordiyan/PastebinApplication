@@ -2,7 +2,6 @@ package pet.project.pasteBinApplication.web.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,13 +28,13 @@ public class UserDto {
     @Length(max = 255, message = "DTO user: LOGIN must be smaller than 255 symb", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     String email;
 
-    @Schema(description = "User password", example = "123") // в теории это можно перенести в JsonProperty и наоборот
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //не игнорим, а выставляем разрешение только записи
+    @Schema(description = "User password", example = "123")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull(message = "DTO user: PASSWORD cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     String password;
 
     @Schema(description = "User confirm password", example = "123")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull(message = "DTO user: PASSWORD CONFIRMATION cannot be null!", groups = OnCreateProcess.class)
+    @NotNull(message = "DTO user: PASSWORD CONFIRMATION cannot be null!", groups = {OnUpdateProcess.class, OnCreateProcess.class})
     String passwordConfirm;
 }

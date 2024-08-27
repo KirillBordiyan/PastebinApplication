@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pet.project.pasteBinApplication.exceptions.AccessDeniedException;
 import pet.project.pasteBinApplication.model.user.Role;
 import pet.project.pasteBinApplication.model.user.UserEntity;
@@ -34,7 +33,7 @@ public class JwtService {
     private final UserDetailsService userDetailsService;
 
     @PostConstruct
-    private SecretKey generateKey(){
+    private SecretKey generateKey() {
         byte[] decodedKey = Base64.getDecoder().decode(properties.getSecret());
         return Keys.hmacShaKeyFor(decodedKey);
     }
@@ -55,8 +54,7 @@ public class JwtService {
                 .compact();
     }
 
-
-    public String generateRefreshToken(String nickName){
+    public String generateRefreshToken(String nickName) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("nickName", String.valueOf(nickName));
 
@@ -69,9 +67,10 @@ public class JwtService {
                 .signWith(generateKey())
                 .compact();
     }
-    public JwtResponse refreshUserTokens(String refreshToken){
+
+    public JwtResponse refreshUserTokens(String refreshToken) {
         JwtResponse response = new JwtResponse();
-        if(!isTokenValid(refreshToken)){
+        if (!isTokenValid(refreshToken)) {
             throw new AccessDeniedException();
         }
         String nickName = getUserNickName(refreshToken);
@@ -83,11 +82,10 @@ public class JwtService {
         return response;
     }
 
-    private List<String> getRoles(Set<Role> roles){
+    private List<String> getRoles(Set<Role> roles) {
         return roles.stream().map(Role::getRoleName)
                 .collect(Collectors.toList());
     }
-
 
     private Claims getClaims(String jwt) {
         return Jwts.parser()
@@ -97,23 +95,23 @@ public class JwtService {
                 .getPayload();
     }
 
-    public String getUserNickName(String jwt){
+    public String getUserNickName(String jwt) {
         Claims claims = getClaims(jwt);
         return String.valueOf((String) claims.get("nickName"));
     }
 
-    public boolean isTokenValid(String jwt){
+    public boolean isTokenValid(String jwt) {
         Claims claims = getClaims(jwt);
         return claims.getExpiration().after(Date.from(Instant.now()));
     }
 
-    public String extractUsername(String jwt){
+    public String extractUsername(String jwt) {
         Claims claims = getClaims(jwt);
         UserEntity byNickName = userService.getByNickName(claims.getSubject());
         return byNickName.getEmail();
     }
 
-    public Authentication getAuthentication(String jwt){
+    public Authentication getAuthentication(String jwt) {
         String login = extractUsername(jwt);
         UserDetails userDetails = userDetailsService.loadUserByUsername(login);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

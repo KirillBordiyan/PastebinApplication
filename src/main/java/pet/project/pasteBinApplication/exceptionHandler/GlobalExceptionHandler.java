@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-@RestControllerAdvice//(basePackageClasses = GlobalExceptionHandler.class)
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
@@ -27,9 +27,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceMappingException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionResponse handleResourceMapping(ResourceMappingException e) {
-        return new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
 
@@ -79,33 +79,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ExceptionResponse handleAuthenticationException(AuthenticationException e){
+    public ExceptionResponse handleAuthenticationException(AuthenticationException e) {
         return new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "Authentication failed!");
     }
 
-    //FIXME для фронта мб пусть пока будут
-//    @ExceptionHandler(FileUploadException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ExceptionResponse handleUploadException(FileUploadException e){
-//        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-//    }
-
-//    @ExceptionHandler(FileDownloadException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ExceptionResponse handleDownloadException(FileDownloadException e){
-//        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-//    }
-
-
-    @ExceptionHandler(PresignedObjectUrlCreatingException.class)
+    @ExceptionHandler(PresignedObjectUrlException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse handlePresignedUrlGenerationException(PresignedObjectUrlCreatingException e){
+    public ExceptionResponse handlePresignedUrlException(PresignedObjectUrlException e) {
         return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ExceptionResponse handleUnauthorizedException(HttpClientErrorException.Unauthorized e){
+    public ExceptionResponse handleUnauthorizedException(HttpClientErrorException.Unauthorized e) {
         return new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
 

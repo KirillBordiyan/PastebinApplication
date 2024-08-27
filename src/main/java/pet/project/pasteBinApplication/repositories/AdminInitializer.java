@@ -2,7 +2,6 @@ package pet.project.pasteBinApplication.repositories;
 
 import jakarta.annotation.Priority;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.webresources.AbstractResource;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +19,9 @@ public class AdminInitializer implements CommandLineRunner {
     private final UserService userService;
     private final RoleRepository roleRepository;
 
-
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-
 
         Role roleUser = roleRepository.findByRoleName("USER");
         Role roleAdmin = roleRepository.findByRoleName("ADMIN");
@@ -37,9 +34,6 @@ public class AdminInitializer implements CommandLineRunner {
         admin.setPasswordConfirm("admin_1_password");
         admin.setRoles(roleSet);
 
-//        if(userService.getByNickName(admin.getNickName()) != null){
-//            return;
-//        }
         userService.createUser(admin);
     }
 }

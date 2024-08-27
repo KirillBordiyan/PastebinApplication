@@ -32,8 +32,6 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
                     """)
     Optional<UserEntity> findByEmail(@Param("email") String email);
 
-    void deleteByNickName(String nickName);
-
     @Query(nativeQuery = true,
             value = """
                     select *
@@ -45,4 +43,6 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
                     """
     )
     boolean isFileOwner(@Param("nickName") String nickName, @Param("fileName") String fileName);
+
+    void deleteByNickName(String nickName);
 }

@@ -1,9 +1,6 @@
 package pet.project.pasteBinApplication.service.implementation;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-
     @Override
     @Transactional(readOnly = true)
 //    @Cacheable(value = "UserService::GetByNickName", key = "#nickName")
@@ -44,31 +40,31 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found (by login/email)"));
     }
 
-
     @Override
     @Transactional
 //    @CachePut(value = "UserService::GetByNickName", key = "#userEntity.nickName")
-    public UserEntity updateUser(UserEntity userEntity) {
+    public UserEntity updateUser(UserEntity userEntityData) {
 
-        if (Objects.isNull(userEntity.getNickName())) {
+        if (Objects.isNull(userEntityData.getNickName())) {
             throw new IllegalStateException("UPDATE: User name must not be null!");
         }
-        if (Objects.isNull(userEntity.getEmail())) {
-            throw new IllegalStateException("UPDATE: Login must not be null!");
-        }
-        if (Objects.isNull(userEntity.getPassword())) {
+        if (Objects.isNull(userEntityData.getPassword())) {
             throw new IllegalStateException("UPDATE: Password must not be null!");
         }
-//        if (Objects.isNull(userEntity.getPasswordConfirm())) {
-//            throw new IllegalStateException("UPDATE: Password confirm must not be null!");
-//        }
-        if (Objects.isNull(userEntity.getRoles())) {
-            throw new IllegalStateException("UPDATE: Roles must not be null!");
+        if (Objects.isNull(userEntityData.getPasswordConfirm())) {
+            throw new IllegalStateException("UPDATE: Password confirm must not be null!");
+        }
+        if (!Objects.equals(userEntityData.getPassword(), userEntityData.getPasswordConfirm())) {
+            throw new IllegalStateException("UPDATE: Password and password confirmation are different!");
         }
 
-        userEntity.setPassword(encoder.encode(userEntity.getPassword()));
-        userRepository.save(userEntity);
-        return userEntity;
+        UserEntity update = getByNickName(userEntityData.getNickName());
+
+        update.setPassword(encoder.encode(userEntityData.getPassword()));
+        update.setEmail(userEntityData.getEmail());
+
+        userRepository.save(update);
+        return update;
     }
 
     @Override
@@ -90,7 +86,10 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findUserName(userEntity.getNickName()).isPresent()) {
             throw new IllegalStateException("CREATE: User already exists!");
         }
-        if (!userEntity.getPassword().equals(userEntity.getPasswordConfirm())) {
+        if (userRepository.findByEmail(userEntity.getEmail()).isPresent()) {
+            throw new IllegalStateException("CREATE: Email already used, choose another!");
+        }
+        if (!Objects.equals(userEntity.getPassword(), userEntity.getPasswordConfirm())) {
             throw new IllegalStateException("CREATE: Password and password confirmation are different!");
         }
 
@@ -105,7 +104,6 @@ public class UserServiceImpl implements UserService {
 
         List<UserFileData> files = new ArrayList<>();
         userEntity.setFiles(files);
-
         userRepository.save(userEntity);
 
         return userEntity;

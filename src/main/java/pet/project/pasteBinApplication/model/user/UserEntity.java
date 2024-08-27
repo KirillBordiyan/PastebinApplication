@@ -1,10 +1,10 @@
 package pet.project.pasteBinApplication.model.user;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import pet.project.pasteBinApplication.model.file.UserFileData;
 
@@ -23,18 +23,14 @@ public class UserEntity implements Serializable {
     @Column(name = "nick_name", unique = true, nullable = false) //БЕЗ ПРОБЕЛОВ И СИМВОЛОВ?? =  никнейм
     String nickName;
 
-
     @Column(name = "email", unique = true, nullable = false)
     String email;
-
 
     @Column(name = "password", nullable = false)
     String password;
 
-    //для подтверждения пароля, не сохраняем в БД
     @Transient
     String passwordConfirm;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

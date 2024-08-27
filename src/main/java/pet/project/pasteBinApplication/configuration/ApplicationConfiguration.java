@@ -1,6 +1,5 @@
 package pet.project.pasteBinApplication.configuration;
 
-import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
@@ -20,7 +19,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import pet.project.pasteBinApplication.prop.MinioProperties;
-//import pet.project.pasteBinApplication.prop.MinioProperties;
 
 import java.time.Duration;
 
@@ -30,24 +28,24 @@ public class ApplicationConfiguration {
 
     private final MinioProperties minioProperties;
 
+    
     @Bean
     public MinioClient minioClient() {
         MinioClient minioClient = MinioClient.builder()
                 .endpoint(minioProperties.getUrl())
                 .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
                 .build();
-
-
         try {
-            if(!minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioProperties.getBucket()).build())){
+            if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioProperties.getBucket()).build())) {
                 minioClient.makeBucket(MakeBucketArgs.builder()
                         .bucket(minioProperties.getBucket())
                         .build());
             }
-        } catch (Exception ignored){}
-
+        } catch (Exception ignored) {
+        }
         return minioClient;
     }
+
 
     @Bean
     public OpenAPI openAPI() {
@@ -69,8 +67,9 @@ public class ApplicationConfiguration {
                 );
     }
 
+
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory factory){
+    public CacheManager cacheManager(RedisConnectionFactory factory) {
 
         RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair
                 .fromSerializer(new GenericJackson2JsonRedisSerializer());
@@ -81,5 +80,4 @@ public class ApplicationConfiguration {
         return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
                 .cacheDefaults(conf).build();
     }
-
 }

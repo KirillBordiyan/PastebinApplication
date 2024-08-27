@@ -6,5 +6,6 @@ import pet.project.pasteBinApplication.web.dto.auth.JwtResponse;
 public interface AuthService {
 
     JwtResponse refresh(String refreshToken);
+
     JwtResponse login(JwtRequest loginRequest);
 }

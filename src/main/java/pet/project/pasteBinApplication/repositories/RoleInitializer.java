@@ -18,11 +18,6 @@ public class RoleInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
 
-//        if (roleRepository.findByRoleName("USER") != null &&
-//                roleRepository.findByRoleName("ADMIN") != null) {
-//            return;
-//        }
-
         Role user = new Role();
         user.setRoleName("USER");
         roleRepository.save(user);
@@ -30,6 +25,5 @@ public class RoleInitializer implements CommandLineRunner {
         Role admin = new Role();
         admin.setRoleName("ADMIN");
         roleRepository.save(admin);
-
     }
 }

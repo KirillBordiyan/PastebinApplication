@@ -7,18 +7,25 @@ volumes:
     driver: local
 
 services:
-#  app:
-#    build:
-#      context: .
-#    container_name: pastebin-application
-#    depends_on:
-#      - db
+  app:
+    build:
+      context: .
+    container_name: pastebin-application
+    depends_on:
+      - db
 #      - redis
-#      - minio
-#    env_file:
-#      - .env
-#    ports:
-#      - '8080:8080'
+      - minio
+    env_file:
+      - .env
+    ports:
+      - '8080:8080'
+
+  adminer:
+    container_name: adminer
+    image: adminer:4.8.1
+    restart: always
+    ports:
+      - '5051:8080'
 
   db:
     image: postgres:13-alpine
@@ -27,20 +34,22 @@ services:
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DATABASE}
+    ports:
+      - '5432:5432'
     volumes:
       - ./src/main/resources/db-init:/docker-entrypoint-initdb.d
 
-  redis:
-    image: redis:latest
-    restart: always
-    container_name: redis-docker #и это хост
-    ports:
-      - '6379:6379'
-    environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_PORT=6379
-    volumes:
-      - cache:/data
+#  redis:
+#    image: redis:7.4-rc-alpine
+#    restart: always
+#    container_name: redis-docker #и это хост
+#    ports:
+#      - '6379:6379'
+#    environment:
+#      - REDIS_PASSWORD=${REDIS_PASSWORD}
+#      - REDIS_PORT=6379
+#    volumes:
+#      - cache:/data
 
   minio:
     image: minio/minio:latest

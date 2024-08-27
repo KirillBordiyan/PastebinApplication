@@ -17,8 +17,6 @@ public class CustomSecurityExpression {
     private final UserService userService;
     private final RoleRepository roleRepository;
 
-    //FIXME либо пользователь сам себе, либо админ
-    // для доступа к объекту пользователя (мы будем использовать, чтобы проверить, можно ли удалять кому-то пользователя)
     public boolean canAccessUserOrAdmin(String nickName) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity user = (JwtEntity) auth.getPrincipal();
@@ -28,7 +26,6 @@ public class CustomSecurityExpression {
         return userNickName.equals(nickName) || hasRole(auth, roleAdmin);
     }
 
-    //FIXME этот дает добро только пользователю
     public boolean canAccessUserOnly(String nickName) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity user = (JwtEntity) auth.getPrincipal();
@@ -36,9 +33,6 @@ public class CustomSecurityExpression {
         return user.getNickName().equals(nickName);
     }
 
-
-    //FIXME такая же история
-    // удалить файл может только пользователь или админ (предполагается, что автоудаление будет делаться админом)
     public boolean canAccessFileUserOrAdmin(String fileName) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity user = (JwtEntity) auth.getPrincipal();
@@ -47,14 +41,12 @@ public class CustomSecurityExpression {
         return userService.isUserFileOwner(user.getNickName(), fileName) || hasRole(auth, roleAdmin);
     }
 
-    //FIXME опять же, только пользователь
     public boolean canAccessFileUserOnly(String fileName) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity user = (JwtEntity) auth.getPrincipal();
 
         return userService.isUserFileOwner(user.getNickName(), fileName);
     }
-
 
     private boolean hasRole(Authentication authentication, Role... roles) {
         for (Role role : roles) {

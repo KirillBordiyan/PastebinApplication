@@ -1,15 +1,13 @@
 package pet.project.pasteBinApplication.service.implementation;
 
-import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pet.project.pasteBinApplication.exceptions.PresignedObjectUrlCreatingException;
+import pet.project.pasteBinApplication.exceptions.PresignedObjectUrlException;
 import pet.project.pasteBinApplication.model.file.UserFileData;
-//import pet.project.pasteBinApplication.prop.MinioProperties;
 import pet.project.pasteBinApplication.prop.MinioProperties;
 import pet.project.pasteBinApplication.repositories.FileDataRepository;
 import pet.project.pasteBinApplication.service.FileService;
@@ -33,36 +31,30 @@ public class FileServiceImpl implements FileService {
     private final UserFileMapper fileMapper;
     private final MinioProperties properties;
 
-
     @Override
     public List<UserFileData> getAllUserFiles(String nickName) {
         return List.copyOf((userService.getByNickName(nickName).getFiles()));
     }
 
-
     @Override
-    public FilePutResponse generateBucketFileName(FilePutRequest filePutRequest){
+    public FilePutResponse generateBucketFileName(FilePutRequest filePutRequest) {
 
-        String uniqueFileName = filePutRequest.getOwnerNickName()+"_"+filePutRequest.getOriginalFileName();
+        String uniqueFileName = filePutRequest.getOwnerNickName() + "_" + filePutRequest.getOriginalFileName();
         FilePutResponse response = new FilePutResponse();
 
-        if(fileDataRepository.findByBucketFileName(uniqueFileName).isPresent()){
-            /* ищем в бд такое уникальное название, если оно есть, то флажок "мы заменим"*/
+        if (fileDataRepository.findByBucketFileName(uniqueFileName).isPresent()) {
             response.setReplaced(true);
         }
         response.setUniqueFileName(uniqueFileName);
         return response;
     }
 
-
     @Override
     public FilePutResponse getPressignedPutUrl(FilePutRequest filePutRequest) {
         try {
             FilePutResponse response = generateBucketFileName(filePutRequest);
-//            Map<String, String> reqParams = new HashMap<String, String>();
-//            reqParams.put("response-content-type", "application/json");
 
-            if(!response.getReplaced()){
+            if (!response.getReplaced()) {
                 UserFileDataDto dto = new UserFileDataDto();
                 dto.setOriginalFileName(filePutRequest.getOriginalFileName());
                 dto.setOwnerNickName(filePutRequest.getOwnerNickName());
@@ -74,18 +66,16 @@ public class FileServiceImpl implements FileService {
             String presignedPutUrl = minioClient.getPresignedObjectUrl(
                     GetPresignedObjectUrlArgs.builder()
                             .method(Method.PUT)
-//                            .bucket("bucket1")
                             .bucket(properties.getBucket())
                             .object(response.getUniqueFileName())
                             .expiry(60 * 60 * 24)
-//                            .extraQueryParams(reqParams)
                             .build());
 
             response.setPresignedPutUrl(presignedPutUrl);
 
             return response;
         } catch (Exception e) {
-            throw new PresignedObjectUrlCreatingException("Pre-signed PUT link creating was failed: " + e.getMessage());
+            throw new PresignedObjectUrlException("Pre-signed PUT link creating was failed: " + e.getMessage());
         }
     }
 
@@ -107,7 +97,7 @@ public class FileServiceImpl implements FileService {
             response.setPresignedGetUrl(presignedGetUrl);
             return response;
         } catch (Exception e) {
-            throw new PresignedObjectUrlCreatingException("Pre-signed GET link creating was failed: " + e.getMessage());
+            throw new PresignedObjectUrlException("Pre-signed GET link creating was failed: " + e.getMessage());
         }
     }
 }

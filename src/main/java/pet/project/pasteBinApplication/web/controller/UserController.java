@@ -28,11 +28,10 @@ public class UserController {
 
     private final UserService userService;
     private final FileService fileService;
+    private final JwtService jwt;
 
     private final UserMapper userMapper;
     private final UserFileMapper fileMapper;
-
-    private final JwtService jwt;
 
     @Operation(
             summary = "Update user",
@@ -76,14 +75,12 @@ public class UserController {
     @Operation(
             summary = "Get userDto by nick name"
     )
-    @GetMapping("/who-i-am")
+    @GetMapping("/who-am-i")
     public UserDto whoIAm(@RequestHeader(name = "Authorization") String access) {
         String token = access.substring(7);
         String name = jwt.getUserNickName(token);
 
         UserEntity userEntity = userService.getByNickName(name);
         return userMapper.toDto(userEntity);
-
     }
-
 }
