@@ -1,6 +1,8 @@
 package pet.project.pasteBinApplication.configuration;
 
-//import io.lettuce.core.RedisChannelWriter;
+import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -8,17 +10,9 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.cache.CacheManager;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.data.redis.cache.RedisCacheConfiguration;
-//import org.springframework.data.redis.cache.RedisCacheManager;
-//import org.springframework.data.redis.cache.RedisCacheWriter;
-//import org.springframework.data.redis.connection.RedisConnectionFactory;
-//import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-//import org.springframework.data.redis.serializer.RedisSerializationContext;
-//import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -26,6 +20,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import pet.project.pasteBinApplication.prop.MinioProperties;
+//import pet.project.pasteBinApplication.prop.MinioProperties;
 
 import java.time.Duration;
 
@@ -37,11 +32,21 @@ public class ApplicationConfiguration {
 
     @Bean
     public MinioClient minioClient() {
-        return MinioClient.builder()
-//                .endpoint(minioProperties.getUrl())
-                .endpoint("http://localhost:9000")
+        MinioClient minioClient = MinioClient.builder()
+                .endpoint(minioProperties.getUrl())
                 .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
                 .build();
+
+
+        try {
+            if(!minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioProperties.getBucket()).build())){
+                minioClient.makeBucket(MakeBucketArgs.builder()
+                        .bucket(minioProperties.getBucket())
+                        .build());
+            }
+        } catch (Exception ignored){}
+
+        return minioClient;
     }
 
     @Bean
