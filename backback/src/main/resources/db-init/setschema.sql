@@ -1,1 +1,0 @@
-SET search_path = pastebin_schema;
