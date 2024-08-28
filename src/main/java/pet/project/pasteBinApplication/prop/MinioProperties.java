@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @NoArgsConstructor
-@ConfigurationProperties(prefix = "spring.minio")
+@ConfigurationProperties(prefix = "minio")
 public class MinioProperties {
 
     private String bucket;

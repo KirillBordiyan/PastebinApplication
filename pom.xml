@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>pet.project</groupId>
@@ -26,13 +26,11 @@
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <jwt.version>0.12.5</jwt.version>
-
     </properties>
-
 
     <dependencies>
 
-<!--        redis cache-->
+        <!--        redis cache-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -70,7 +68,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-<!--            <version>${lombok.version}</version>-->
         </dependency>
 
         <!--        для yaml зависимостей, норм сваггер описать-->
@@ -109,19 +106,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <!--		шаблончики-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <!--        второй вариант обращения к АПИ (RestClient.create())-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <!--		minio docker-->
@@ -163,7 +147,6 @@
             <version>${jakarta-validation.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -175,7 +158,6 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
-
 
     </dependencies>
 
