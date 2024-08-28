@@ -6,51 +6,10 @@ volumes:
   minio-data:
     driver: local
 
-networks:
-  dc:
 
 services:
-  app:
-    networks:
-      - dc
-    build:
-      context: .
-    container_name: pastebin-application
-    depends_on:
-      - db
-      - minio
-      - redis
-    env_file:
-      - .env
-    ports:
-      - '8080:8080'
-
-  adminer:
-    networks:
-      - dc
-    image: adminer:4.8.1
-    container_name: adminer
-    restart: always
-    ports:
-      - '5051:8080'
-
-  db:
-    networks:
-      - dc
-    image: postgres:13-alpine
-    container_name: pastebin-db-docker #это хост
-    environment:
-      - POSTGRES_USER=${POSTGRES_USERNAME}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DATABASE}
-    ports:
-      - '5432:5432'
-    volumes:
-      - ./src/main/resources/db-init:/docker-entrypoint-initdb.d
 
   minio:
-    networks:
-      - dc
     image: minio/minio:latest
     container_name: minio-docker
     environment:
@@ -64,8 +23,6 @@ services:
       - minio-data:/minio
 
   redis:
-    networks:
-      - dc
     image: redis:7.4-rc-alpine
     restart: always
     container_name: redis-docker #и это хост

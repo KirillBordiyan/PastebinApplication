@@ -1,21 +1,3 @@
-#docker run --name pastebin-db-only -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=pastebin -d postgres
-#docker exec -ti pastebin-db-only psql -U root -d pastebin
-
-#  для создания схем (чтобы не использовать публичную):
-#  1) в консоли пишем -->> create schema pastebin_schema;
-#  2) потом добавляем пути -->> SET search_path = public, pastebin_schema;
-#  3) проверяем -->> \dn покажет все схемы
-#  4) потом запуск прилаги
-#  5) \d покажет вообще все таблицы (с разных схем);
-#  нам важно только знать, что есть схема и что ей принадлежат наши таблицы
-
-#was using (full):
-#docker run -p 9000:9000 -p 9001:9001 --name minio-result -v D:\minio\data:/data -e "MINIO_ROOT_USER=root" -e "MINIO_ROOT_PASSWORD=root" quay.io/minio/minio server /data --console-address ":9001"
-
-#РЕАЛИЗОВАН ДОКЕР КОМПОУЗ
-#само по себе приложение работает с бд в pastebin-db-only
-# в композ файле свой контейнер с БД;
-# но есть проблема: параллельно всегда должен быть запущен редис, тк по коду проверка идет в нем.
 server:
   port: 8080
 
@@ -29,8 +11,8 @@ springdoc:
 security:
   jwt:
     secret: ${JWT_SECRET}
-    access: 1 #${JWT_ACCESS} #часов
-    refresh: 30 #${JWT_REFRESH} #дней
+    access: 1 #часов
+    refresh: 30 #дней
 
 minio:
   url: ${MINIO_URL}
